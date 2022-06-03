@@ -1,0 +1,30 @@
+version: "3.8"
+services:
+  compute-server:
+    image: base:full
+    ports:
+      - 10022:22
+      - 10080:80
+      - 13306:3306
+      - 18080:8080
+      - 15000:5000
+      - 15006:5006
+      - 16000:6000
+      - 16006:6006
+      - 18786:8786
+      - 18787:8787
+      - 18888:8888
+      - 18889:8889
+    volumes:
+      - /root/project:/root/project
+    restart: always
+    hostname: "base"
+    ipc: host
+    privileged: true
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              device_ids: ['0']
+              capabilities: [gpu]
