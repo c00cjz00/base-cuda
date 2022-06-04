@@ -6,10 +6,9 @@ $ docker pull djyoon0223/base:full
 
 # Summary
 ## - Tag
-> `djyoon0223/base:basic` \
+1. `djyoon0223/base:basic` \
 `nvidia/cuda:11.2.0-cudnn8-devel-ubuntu20.04` + `miniconda` + `jupyter`
-
-> `djyoon0223/base:full` \
+2. `djyoon0223/base:full` \
 `nvidia/cuda:11.2.0-cudnn8-devel-ubuntu20.04` + `miniconda` + `jupyter` + `rapids(cudf, cuml)` + `pycaret` + `tensorflow` + `torch` + `opencv`
 
 ## - Usage
@@ -79,7 +78,7 @@ services:
 
 # 1. `common`: Commonly used files when building images
 ## 1.1 `common/.bashrc`
-Default `bash` setting
+Additional `bash` setting
 ```
 ### custom configurations
 # alias
@@ -93,13 +92,13 @@ export LS_COLORS='di=00;36:fi=00;37'
 ```
 
 ## 1.2 `common/account`
-Default `ID:PASSWORD`
+Format: `ID:PASSWORD`
 ```
 root:1234
 ```
 
 ## 1.3 `common/jupyter_notebook_config.py`
-Default `jupyter notebook` setting
+Additional `jupyter notebook` setting
 ```
 c.NotebookApp.allow_origin = '*'
 c.NotebookApp.ip = '*'
@@ -118,7 +117,7 @@ jt -t onedork -cellw 98% -f roboto -fs 10 -nfs 11 -tfs 11 -T
 ```
 
 ## 1.5 `common/vimrc`
-`vim` setting
+Additional `vim` setting
 ```
 set showcmd		" Show (partial) command in status line.
 set showmatch		" Show matching brackets.
