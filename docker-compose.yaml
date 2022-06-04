@@ -1,12 +1,10 @@
 version: "3.8"
 services:
   compute-server:
-    image: base:full
+    image: djyoon0223/base:full
     ports:
       - 10022:22
-      - 10080:80
       - 13306:3306
-      - 18080:8080
       - 15000:5000
       - 15006:5006
       - 16000:6000
