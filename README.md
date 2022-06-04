@@ -91,7 +91,7 @@ alias jn='jupyter notebook --allow-root &'
 export LS_COLORS='di=00;36:fi=00;37'
 ```
 
-## 1.2 [`common/account`](common/account)
+## 1.2 [`common/account`](https://github.com/djy-git/base_env/blob/main/common/account)
 Format: `ID:PASSWORD`
 ```
 root:1234
