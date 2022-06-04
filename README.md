@@ -37,7 +37,7 @@ djyoon0223/base:full
 ```
 
 ### 2. `docker-compose`
-[`docker-compose.yaml`](docker-compose.yaml)
+[`docker-compose.yaml`](https://github.com/djy-git/base_env/blob/main/docker-compose.yaml)
 ```
 version: "3.8"
 services:
@@ -77,7 +77,7 @@ services:
 # Image building
 
 # 1. `common`: Commonly used files when building images
-## 1.1 [`common/.bashrc`](common/.bashrc)
+## 1.1 [`common/.bashrc`](https://github.com/djy-git/base_env/blob/main/common/.bashrc)
 Additional `bash` setting
 ```
 ### custom configurations
@@ -97,7 +97,7 @@ Format: `ID:PASSWORD`
 root:1234
 ```
 
-## 1.3 [`common/jupyter_notebook_config.py`](common/jupyter_notebook_config.py)
+## 1.3 [`common/jupyter_notebook_config.py`](https://github.com/djy-git/base_env/blob/main/common/jupyter_notebook_config.py)
 Additional `jupyter notebook` setting
 ```
 c.NotebookApp.allow_origin = '*'
@@ -108,7 +108,7 @@ c.NotebookApp.password = ''
 c.NotebookApp.token = ''
 ```
 
-## 1.4 [`common/jupytertheme.sh`](common/jupytertheme.sh)
+## 1.4 [`common/jupytertheme.sh`](https://github.com/djy-git/base_env/blob/main/common/jupytertheme.sh)
 `jupyter notebook` theme (applied only to `djyoon0223/base:full`) \
 Use `$ jt -r` if you want to reset jupyter theme
 ```
@@ -116,7 +116,7 @@ jt -t onedork -cellw 98% -f roboto -fs 10 -nfs 11 -tfs 11 -T
 # jt -r  # reset jupyter theme
 ```
 
-## 1.5 [`common/vimrc`](common/vimrc)
+## 1.5 [`common/vimrc`](https://github.com/djy-git/base_env/blob/main/common/vimrc)
 Additional `vim` setting
 ```
 set showcmd		" Show (partial) command in status line.
@@ -147,7 +147,7 @@ colorscheme desert
 
 # 2. Dockerfile
 ## 2.1 `djyoon0223/base:basic`
-[`base.basic.Dockerfile`](base.basic.Dockerfile)
+[`base.basic.Dockerfile`](https://github.com/djy-git/base_env/blob/main/base.basic.Dockerfile)
 ```dockerfile
 # syntax=docker/dockerfile:1
 FROM nvidia/cuda:11.2.0-cudnn8-devel-ubuntu20.04
@@ -217,7 +217,7 @@ ENTRYPOINT service ssh start && jupyter notebook --allow-root
 ```
 
 ## 2.2 `djyoon0223/base:full`
-[`base.full.Dockerfile`](base.full.Dockerfile)
+[`base.full.Dockerfile`](https://github.com/djy-git/base_env/blob/main/base.full.Dockerfile)
 ```dockerfile
 # syntax=docker/dockerfile:1
 FROM nvidia/cuda:11.2.0-cudnn8-devel-ubuntu20.04
