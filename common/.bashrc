@@ -1,5 +1,4 @@
 
-
 ### custom configurations
 # alias
 alias vb='vi ~/.bashrc'
@@ -9,5 +8,3 @@ alias jn='jupyter notebook --allow-root &'
 
 # ls color
 export LS_COLORS='di=00;36:fi=00;37'
-
-
