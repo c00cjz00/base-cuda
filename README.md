@@ -1,6 +1,7 @@
 # Prepared CUDA based Machine Learning Project Image
 - **DockerHub**: [djyoon0223/base](https://hub.docker.com/repository/docker/djyoon0223/base)
 ```
+$ docker pull djyoon0223/base:basic
 $ docker pull djyoon0223/base:full
 ```
 
@@ -15,7 +16,7 @@ $ docker pull djyoon0223/base:full
 ### 1. `docker run`
 ```
 $ sudo docker run \
---name compute-server \
+--name compute_server \
 --hostname base \
 --gpus '"device=0"'
 --ipc host \
@@ -41,7 +42,7 @@ djyoon0223/base:full
 ```
 version: "3.8"
 services:
-  compute-server:
+  compute_server:
     image: djyoon0223/base:full
     ports:
       - 10022:22
@@ -144,6 +145,43 @@ set viminfo=
 colorscheme desert
 ```
 
+## 1.6 [`common/requirements_basic.apt`](https://github.com/djy-git/base_env/blob/main/common/requirements_basic.apt)
+`apt` package list for `djyoon0223/base:basic`
+```
+wget
+bzip2
+ca-certificates 
+curl 
+git 
+vim 
+openssh-server
+```
+
+## 1.7 [`common/requirements_full.apt`](https://github.com/djy-git/base_env/blob/main/common/requirements_full.apt)
+`apt` package list for `djyoon0223/base:full`
+```
+htop
+net-tools
+iproute2
+ubuntu-drivers-common
+build-essential
+rinetd 
+unzip 
+libgl1-mesa-glx
+```
+
+## 1.8 [`common/requirements_basic.pip`](https://github.com/djy-git/base_env/blob/main/common/requirements_basic.pip)
+`pip` package list for `djyoon0223/base:basic`
+```
+jupyter
+jupyterlab
+```
+
+## 1.9 [`common/requirements_full.pip`](https://github.com/djy-git/base_env/blob/main/common/requirements_full.pip)
+`pip` package list for `djyoon0223/base:full`
+```
+```
+
 
 # 2. Dockerfile
 ## 2.1 `djyoon0223/base:basic`
@@ -157,21 +195,13 @@ ARG DEBIAN_FRONTEND=noninteractive
 
 # environment variables
 ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
-ENV PATH /opt/conda/bin:$PATH:.
+ENV PATH $PATH:/opt/conda/bin:.
 WORKDIR /root
 
-# apt packages
-RUN apt-get update && \
-    apt-get install -y wget bzip2 ca-certificates curl git vim openssh-server && \
-    apt-get clean && \
-    rm -rf /var/lib/ap/lists/*
-
-# ssh setting
-RUN echo "PermitRootLogin yes" >> /etc/ssh/sshd_config && \
-    mkdir -p /run/sshd
-
 # install miniconda
-RUN wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-py38_4.12.0-Linux-x86_64.sh -O ~/miniconda.sh && \
+RUN apt-get update && \
+    apt-get install -y wget && \
+    wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-py38_4.12.0-Linux-x86_64.sh -O ~/miniconda.sh && \
     /bin/bash ~/miniconda.sh -b -p /opt/conda && \
     rm ~/miniconda.sh && \
     /opt/conda/bin/conda clean -tipsy && \
@@ -182,32 +212,44 @@ ENV TINI_VERSION v0.16.1
 ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /usr/bin/tini
 RUN chmod +x /usr/bin/tini
 
-## create new env
+# create new env
 #RUN conda create -n full -c rapidsai -c nvidia -c conda-forge cudf=22.04 cuml=22.04 python=3.8 cudatoolkit=11.2 numpy=1.19 && \
 #    echo "conda activate full" >> ~/.bashrc
 #SHELL ["conda", "run", "-n", "full", "/bin/bash", "-c"]
-#RUN conda install ipykernel
-#RUN python -m ipykernel install --user --name full --display-name "full"
+#RUN conda install ipykernel && \
+#    python -m ipykernel install --user --name full --display-name "full"
 #RUN pip install pycaret[full]==2.3.10 --ignore-installed && \
 #    pip install tensorflow==2.9.1 torch==1.11.0 torchvision==0.12.0 torchaudio==0.11.0 opencv-python==4.5.5.64 && \
 #    pip install numpy==1.20
-#
-## apt packages
-#RUN apt-get update && apt-get install -y \
-#    htop net-tools iproute2 ubuntu-drivers-common build-essential rinetd unzip libgl1-mesa-glx && \
-#    apt-get clean && \
-#    rm -rf /var/lib/ap/lists/*
 
-# vim, bashrc, account setting
-COPY common common
-RUN cat common/vimrc >> /usr/share/vim/vimrc && \
-    cat common/.bashrc >> .bashrc && \
-    cat common/account | chpasswd
+# ssh setting
+RUN apt-get install -y openssh-server && \
+    echo "PermitRootLogin yes" >> /etc/ssh/sshd_config && \
+    mkdir -p /run/sshd
 
 # jupyter setting
 RUN pip install jupyter jupyterlab && \
-    jupyter notebook --generate-config && \
+    jupyter notebook --generate-config
+
+# copy common directory
+COPY common common
+
+# bashrc, vim, account, jupyter setting
+RUN printf "\n# PATH \nexport PATH=$PATH" >> .bashrc && \
+    cat common/.bashrc >> .bashrc && \
+    apt-get install -y vim && cat common/vimrc >> /usr/share/vim/vimrc && \
+    cat common/account | chpasswd && \
     cat common/jupyter_notebook_config.py >> .jupyter/jupyter_notebook_config.py
+
+# install apt, pip packages
+RUN xargs apt-get install -y < common/requirements_basic.apt && \
+#    xargs apt-get install -y < common/requirements_full.apt && \
+    apt-get clean && \
+    rm -rf /var/lib/ap/lists/*
+
+# install pip packages
+RUN pip install -r common/requirements_basic.pip
+#    pip install -r common/requirements_full.pip
 
 # clean
 RUN rm -r common
@@ -227,21 +269,13 @@ ARG DEBIAN_FRONTEND=noninteractive
 
 # environment variables
 ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
-ENV PATH /opt/conda/bin:$PATH:.
+ENV PATH $PATH:/opt/conda/bin:.
 WORKDIR /root
 
-# apt packages
-RUN apt-get update && \
-    apt-get install -y wget bzip2 ca-certificates curl git vim openssh-server && \
-    apt-get clean && \
-    rm -rf /var/lib/ap/lists/*
-
-# ssh setting
-RUN echo "PermitRootLogin yes" >> /etc/ssh/sshd_config && \
-    mkdir -p /run/sshd
-
 # install miniconda
-RUN wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-py38_4.12.0-Linux-x86_64.sh -O ~/miniconda.sh && \
+RUN apt-get update && \
+    apt-get install -y wget && \
+    wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-py38_4.12.0-Linux-x86_64.sh -O ~/miniconda.sh && \
     /bin/bash ~/miniconda.sh -b -p /opt/conda && \
     rm ~/miniconda.sh && \
     /opt/conda/bin/conda clean -tipsy && \
@@ -256,31 +290,40 @@ RUN chmod +x /usr/bin/tini
 RUN conda create -n full -c rapidsai -c nvidia -c conda-forge cudf=22.04 cuml=22.04 python=3.8 cudatoolkit=11.2 numpy=1.19 && \
     echo "conda activate full" >> ~/.bashrc
 SHELL ["conda", "run", "-n", "full", "/bin/bash", "-c"]
-RUN conda install ipykernel
-RUN python -m ipykernel install --user --name full --display-name "full"
+RUN conda install ipykernel && \
+    python -m ipykernel install --user --name full --display-name "full"
 RUN pip install pycaret[full]==2.3.10 --ignore-installed && \
     pip install tensorflow==2.9.1 torch==1.11.0 torchvision==0.12.0 torchaudio==0.11.0 opencv-python==4.5.5.64 && \
     pip install numpy==1.20
 
-# apt packages
-RUN apt-get update && apt-get install -y \
-    htop net-tools iproute2 ubuntu-drivers-common build-essential rinetd unzip libgl1-mesa-glx && \
-    apt-get clean && \
-    rm -rf /var/lib/ap/lists/*
-
-# vim, bashrc, account setting
-COPY common common
-RUN cat common/vimrc >> /usr/share/vim/vimrc && \
-    cat common/.bashrc >> .bashrc && \
-    cat common/account | chpasswd
+# ssh setting
+RUN apt-get install -y openssh-server && \
+    echo "PermitRootLogin yes" >> /etc/ssh/sshd_config && \
+    mkdir -p /run/sshd
 
 # jupyter setting
 RUN pip install jupyter jupyterlab && \
-    jupyter notebook --generate-config && \
+    jupyter notebook --generate-config
+
+# copy common directory
+COPY common common
+
+# bashrc, vim, account, jupyter setting
+RUN printf "\n# PATH \nexport PATH=$PATH" >> .bashrc && \
+    cat common/.bashrc >> .bashrc && \
+    apt-get install -y vim && cat common/vimrc >> /usr/share/vim/vimrc && \
+    cat common/account | chpasswd && \
     cat common/jupyter_notebook_config.py >> .jupyter/jupyter_notebook_config.py
-RUN pip install jupyterthemes && \
-    chmod +x common/jupytertheme.sh && \
-    common/jupytertheme.sh
+
+# install apt, pip packages
+RUN xargs apt-get install -y < common/requirements_basic.apt && \
+    xargs apt-get install -y < common/requirements_full.apt && \
+    apt-get clean && \
+    rm -rf /var/lib/ap/lists/*
+
+# install pip packages
+RUN pip install -r common/requirements_basic.pip && \
+    pip install -r common/requirements_full.pip
 
 # clean
 RUN rm -r common
