@@ -1,0 +1,8 @@
+htop
+net-tools
+iproute2
+ubuntu-drivers-common
+build-essential
+rinetd 
+unzip 
+libgl1-mesa-glx
