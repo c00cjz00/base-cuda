@@ -110,11 +110,10 @@ c.NotebookApp.token = ''
 ```
 
 ## 1.4 [`common/jupytertheme.sh`](https://github.com/djy-git/base_env/blob/main/common/jupytertheme.sh)
-`jupyter notebook` theme (applied only to `djyoon0223/base:full`) \
+`jupyter notebook` theme \
 Use `$ jt -r` if you want to reset jupyter theme
 ```
 jt -t onedork -cellw 98% -f roboto -fs 10 -nfs 11 -tfs 11 -T
-# jt -r  # reset jupyter theme
 ```
 
 ## 1.5 [`common/vimrc`](https://github.com/djy-git/base_env/blob/main/common/vimrc)
