@@ -1,7 +1,7 @@
+openssh-server
+vim
 wget
 bzip2
 ca-certificates 
 curl 
-git 
-vim 
-openssh-server
+git

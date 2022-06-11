@@ -6,3 +6,4 @@ c.NotebookApp.notebook_dir = '/root'
 c.NotebookApp.open_browser = False
 c.NotebookApp.password = ''
 c.NotebookApp.token = ''
+c.NotebookApp.allow_root = True
