@@ -42,28 +42,28 @@ RUN apt-get install -y openssh-server && \
 RUN pip install jupyter jupyterlab && \
     jupyter notebook --generate-config
 
-# copy common directory
-COPY common common
+# copy context directory
+COPY context context
 
 # bashrc, vim, account, jupyter setting
 RUN printf "\n# PATH \nexport PATH=$PATH" >> .bashrc && \
-    cat common/.bashrc >> .bashrc && \
-    apt-get install -y vim && cat common/vimrc >> /usr/share/vim/vimrc && \
-    cat common/account | chpasswd && \
-    cat common/jupyter_notebook_config.py >> .jupyter/jupyter_notebook_config.py
+    cat context/.bashrc >> .bashrc && \
+    apt-get install -y vim && cat context/vimrc >> /usr/share/vim/vimrc && \
+    cat context/account | chpasswd && \
+    cat context/jupyter_notebook_config.py >> .jupyter/jupyter_notebook_config.py
 
 # install apt, pip packages
-RUN xargs apt-get install -y < common/requirements_basic.apt && \
-    xargs apt-get install -y < common/requirements_full.apt && \
+RUN xargs apt-get install -y < context/requirements_basic.apt && \
+    xargs apt-get install -y < context/requirements_full.apt && \
     apt-get clean && \
     rm -rf /var/lib/ap/lists/*
 
 # install pip packages
-RUN pip install -r common/requirements_basic.pip && \
-    pip install -r common/requirements_full.pip
+RUN pip install -r context/requirements_basic.pip && \
+    pip install -r context/requirements_full.pip
 
 # clean
-RUN rm -r common
+RUN rm -r context
 
 # open ssh, jupyter server
 ENTRYPOINT service ssh start && jupyter notebook --allow-root

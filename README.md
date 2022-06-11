@@ -77,8 +77,8 @@ services:
 
 # Image building
 
-# 1. `common`: Commonly used files when building images
-## 1.1 [`common/.bashrc`](https://github.com/djy-git/base_env/blob/main/common/.bashrc)
+# 1. `context`: Commonly used files when building images
+## 1.1 [`context/.bashrc`](https://github.com/djy-git/base_env/blob/main/context/.bashrc)
 Additional `bash` setting
 ```
 ### custom configurations
@@ -92,13 +92,13 @@ alias jn='jupyter notebook --allow-root &'
 export LS_COLORS='di=00;36:fi=00;37'
 ```
 
-## 1.2 [`common/account`](https://github.com/djy-git/base_env/blob/main/common/account)
+## 1.2 [`context/account`](https://github.com/djy-git/base_env/blob/main/context/account)
 Format: `ID:PASSWORD`
 ```
 root:1234
 ```
 
-## 1.3 [`common/jupyter_notebook_config.py`](https://github.com/djy-git/base_env/blob/main/common/jupyter_notebook_config.py)
+## 1.3 [`context/jupyter_notebook_config.py`](https://github.com/djy-git/base_env/blob/main/context/jupyter_notebook_config.py)
 Additional `jupyter notebook` setting
 ```
 c.NotebookApp.allow_origin = '*'
@@ -109,14 +109,14 @@ c.NotebookApp.password = ''
 c.NotebookApp.token = ''
 ```
 
-## 1.4 [`common/jupytertheme.sh`](https://github.com/djy-git/base_env/blob/main/common/jupytertheme.sh)
+## 1.4 [`context/jupytertheme.sh`](https://github.com/djy-git/base_env/blob/main/context/jupytertheme.sh)
 `jupyter notebook` theme \
 Use `$ jt -r` if you want to reset jupyter theme
 ```
 jt -t onedork -cellw 98% -f roboto -fs 10 -nfs 11 -tfs 11 -T
 ```
 
-## 1.5 [`common/vimrc`](https://github.com/djy-git/base_env/blob/main/common/vimrc)
+## 1.5 [`context/vimrc`](https://github.com/djy-git/base_env/blob/main/context/vimrc)
 Additional `vim` setting
 ```
 set showcmd		" Show (partial) command in status line.
@@ -144,7 +144,7 @@ set viminfo=
 colorscheme desert
 ```
 
-## 1.6 [`common/requirements_basic.apt`](https://github.com/djy-git/base_env/blob/main/common/requirements_basic.apt)
+## 1.6 [`context/requirements_basic.apt`](https://github.com/djy-git/base_env/blob/main/context/requirements_basic.apt)
 `apt` package list for `djyoon0223/base:basic`
 ```
 wget
@@ -156,7 +156,7 @@ vim
 openssh-server
 ```
 
-## 1.7 [`common/requirements_full.apt`](https://github.com/djy-git/base_env/blob/main/common/requirements_full.apt)
+## 1.7 [`context/requirements_full.apt`](https://github.com/djy-git/base_env/blob/main/context/requirements_full.apt)
 `apt` package list for `djyoon0223/base:full`
 ```
 htop
@@ -169,14 +169,14 @@ unzip
 libgl1-mesa-glx
 ```
 
-## 1.8 [`common/requirements_basic.pip`](https://github.com/djy-git/base_env/blob/main/common/requirements_basic.pip)
+## 1.8 [`context/requirements_basic.pip`](https://github.com/djy-git/base_env/blob/main/context/requirements_basic.pip)
 `pip` package list for `djyoon0223/base:basic`
 ```
 jupyter
 jupyterlab
 ```
 
-## 1.9 [`common/requirements_full.pip`](https://github.com/djy-git/base_env/blob/main/common/requirements_full.pip)
+## 1.9 [`context/requirements_full.pip`](https://github.com/djy-git/base_env/blob/main/context/requirements_full.pip)
 `pip` package list for `djyoon0223/base:full`
 ```
 ```
@@ -185,6 +185,7 @@ jupyterlab
 # 2. Dockerfile
 ## 2.1 `djyoon0223/base:basic`
 [`base.basic.Dockerfile`](https://github.com/djy-git/base_env/blob/main/base.basic.Dockerfile)
+
 ```dockerfile
 # syntax=docker/dockerfile:1
 FROM nvidia/cuda:11.2.0-cudnn8-devel-ubuntu20.04
@@ -230,28 +231,28 @@ RUN apt-get install -y openssh-server && \
 RUN pip install jupyter jupyterlab && \
     jupyter notebook --generate-config
 
-# copy common directory
-COPY common common
+# copy context directory
+COPY context context
 
 # bashrc, vim, account, jupyter setting
 RUN printf "\n# PATH \nexport PATH=$PATH" >> .bashrc && \
-    cat common/.bashrc >> .bashrc && \
-    apt-get install -y vim && cat common/vimrc >> /usr/share/vim/vimrc && \
-    cat common/account | chpasswd && \
-    cat common/jupyter_notebook_config.py >> .jupyter/jupyter_notebook_config.py
+    cat context/.bashrc >> .bashrc && \
+    apt-get install -y vim && cat context/vimrc >> /usr/share/vim/vimrc && \
+    cat context/account | chpasswd && \
+    cat context/jupyter_notebook_config.py >> .jupyter/jupyter_notebook_config.py
 
 # install apt, pip packages
-RUN xargs apt-get install -y < common/requirements_basic.apt && \
-#    xargs apt-get install -y < common/requirements_full.apt && \
+RUN xargs apt-get install -y < context/requirements_basic.apt && \
+#    xargs apt-get install -y < context/requirements_full.apt && \
     apt-get clean && \
     rm -rf /var/lib/ap/lists/*
 
 # install pip packages
-RUN pip install -r common/requirements_basic.pip
-#    pip install -r common/requirements_full.pip
+RUN pip install -r context/requirements_basic.pip
+#    pip install -r context/requirements_full.pip
 
 # clean
-RUN rm -r common
+RUN rm -r context
 
 # open ssh, jupyter server
 ENTRYPOINT service ssh start && jupyter notebook --allow-root
@@ -259,6 +260,7 @@ ENTRYPOINT service ssh start && jupyter notebook --allow-root
 
 ## 2.2 `djyoon0223/base:full`
 [`base.full.Dockerfile`](https://github.com/djy-git/base_env/blob/main/base.full.Dockerfile)
+
 ```dockerfile
 # syntax=docker/dockerfile:1
 FROM nvidia/cuda:11.2.0-cudnn8-devel-ubuntu20.04
@@ -304,28 +306,28 @@ RUN apt-get install -y openssh-server && \
 RUN pip install jupyter jupyterlab && \
     jupyter notebook --generate-config
 
-# copy common directory
-COPY common common
+# copy context directory
+COPY context context
 
 # bashrc, vim, account, jupyter setting
 RUN printf "\n# PATH \nexport PATH=$PATH" >> .bashrc && \
-    cat common/.bashrc >> .bashrc && \
-    apt-get install -y vim && cat common/vimrc >> /usr/share/vim/vimrc && \
-    cat common/account | chpasswd && \
-    cat common/jupyter_notebook_config.py >> .jupyter/jupyter_notebook_config.py
+    cat context/.bashrc >> .bashrc && \
+    apt-get install -y vim && cat context/vimrc >> /usr/share/vim/vimrc && \
+    cat context/account | chpasswd && \
+    cat context/jupyter_notebook_config.py >> .jupyter/jupyter_notebook_config.py
 
 # install apt, pip packages
-RUN xargs apt-get install -y < common/requirements_basic.apt && \
-    xargs apt-get install -y < common/requirements_full.apt && \
+RUN xargs apt-get install -y < context/requirements_basic.apt && \
+    xargs apt-get install -y < context/requirements_full.apt && \
     apt-get clean && \
     rm -rf /var/lib/ap/lists/*
 
 # install pip packages
-RUN pip install -r common/requirements_basic.pip && \
-    pip install -r common/requirements_full.pip
+RUN pip install -r context/requirements_basic.pip && \
+    pip install -r context/requirements_full.pip
 
 # clean
-RUN rm -r common
+RUN rm -r context
 
 # open ssh, jupyter server
 ENTRYPOINT service ssh start && jupyter notebook --allow-root
