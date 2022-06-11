@@ -333,7 +333,7 @@ RUN rm -r context
 ENTRYPOINT service ssh start && jupyter notebook --allow-root
 ```
 
-
 <pre>
-  myQObject: <a href="https://github.com/djy-git/base_env/blob/main/context/account">MyQObject {}</a>
+  myQObject: <a href="[URL_TO_SOURCE](https://github.com/djy-git/base_env/blob/main/context/account?plain=1)">MyQObject {}</a>
 </pre>
+
