@@ -332,3 +332,5 @@ RUN rm -r context
 # open ssh, jupyter server
 ENTRYPOINT service ssh start && jupyter notebook --allow-root
 ```
+
+https://github.com/djy-git/base_env/blob/f1b1c0566ab60ba224d013d240027619c360e55c/context/account?plain=1
