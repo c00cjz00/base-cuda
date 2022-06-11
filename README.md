@@ -57,8 +57,9 @@ services:
       - 18889:8889
     volumes:
       - /root/project:/root/project
-    restart: always
     hostname: "base"
+    restart: always
+    tty: true
     ipc: host
     privileged: true
     deploy:
@@ -79,28 +80,26 @@ services:
 
 # 1. `context`: Commonly used files when building images
 ## 1.1 `context/setting`: Setting files
-### 1.1.1 [`context/setting/.bashrc`](https://github.com/djy-git/base_env/blob/main/context/setting/.bashrc)
-Additional `bash` setting
+### 1.1.1 [`context/setting/bashrc`](https://github.com/djy-git/base_env/blob/main/context/setting/bashrc): Additional `bash` setting
 ```
 ### custom configurations
+# env
+export LS_COLORS='di=00;36:fi=00;37'
+export PATH=$PATH:.
+
 # alias
 alias vb='vi ~/.bashrc'
 alias sb='source ~/.bashrc'
 alias wn='watch -n 0.5 nvidia-smi'
 alias jn='jupyter notebook --allow-root &'
-
-# ls color
-export LS_COLORS='di=00;36:fi=00;37'
 ```
 
-### 1.1.2 [`context/setting/account`](https://github.com/djy-git/base_env/blob/main/context/setting/account)
-Format: `ID:PASSWORD`
+### 1.1.2 [`context/setting/account`](https://github.com/djy-git/base_env/blob/main/context/setting/account): `USER:PASSWORD`
 ```
 root:1234
 ```
 
-### 1.1.3 [`context/setting/vimrc`](https://github.com/djy-git/base_env/blob/main/context/setting/vimrc)
-Additional `vim` setting
+### 1.1.3 [`context/setting/vimrc`](https://github.com/djy-git/base_env/blob/main/context/setting/vimrc): Additional `vim` setting
 ```
 set showcmd		" Show (partial) command in status line.
 set showmatch		" Show matching brackets.
@@ -128,8 +127,7 @@ colorscheme desert
 ```
 
 ## 1.2 `package`: `apt`, `pip` package files
-### 1.2.1 [`context/package/requirements_basic.apt`](https://github.com/djy-git/base_env/blob/main/context/package/requirements_basic.apt)
-`apt` package list for `djyoon0223/base:basic`
+### 1.2.1 [`context/package/requirements_basic.apt`](https://github.com/djy-git/base_env/blob/main/context/package/requirements_basic.apt): `apt` package list for `djyoon0223/base:basic`
 ```
 wget
 bzip2
@@ -140,8 +138,7 @@ vim
 openssh-server
 ```
 
-### 1.2.2 [`context/package/requirements_full.apt`](https://github.com/djy-git/base_env/blob/main/context/package/requirements_full.apt)
-`apt` package list for `djyoon0223/base:full`
+### 1.2.2 [`context/package/requirements_full.apt`](https://github.com/djy-git/base_env/blob/main/context/package/requirements_full.apt): `apt` package list for `djyoon0223/base:full`
 ```
 htop
 net-tools
@@ -153,22 +150,19 @@ unzip
 libgl1-mesa-glx
 ```
 
-### 1.2.3 [`context/package/requirements_basic.pip`](https://github.com/djy-git/base_env/blob/main/context/package/requirements_basic.pip)
-`pip` package list for `djyoon0223/base:basic`
+### 1.2.3 [`context/package/requirements_basic.pip`](https://github.com/djy-git/base_env/blob/main/context/package/requirements_basic.pip): `pip` package list for `djyoon0223/base:basic`
 ```
 jupyter
 jupyterlab
 ```
 
-### 1.2.4 [`context/package/requirements_full.pip`](https://github.com/djy-git/base_env/blob/main/context/package/requirements_full.pip)
-`pip` package list for `djyoon0223/base:full`
+### 1.2.4 [`context/package/requirements_full.pip`](https://github.com/djy-git/base_env/blob/main/context/package/requirements_full.pip): `pip` package list for `djyoon0223/base:full`
 ```
 ```
 
 
 ## 1.3 `context/jupyter`: `jupyter notebook` setting files
-### 1.3.1 [`context/jupyter/jupyter_notebook_config.py`](https://github.com/djy-git/base_env/blob/main/context/jupyter/jupyter_notebook_config.py)
-Additional `jupyter notebook` setting
+### 1.3.1 [`context/jupyter/jupyter_notebook_config.py`](https://github.com/djy-git/base_env/blob/main/context/jupyter/jupyter_notebook_config.py): Additional `jupyter notebook` setting
 ```
 c.NotebookApp.allow_origin = '*'
 c.NotebookApp.ip = '*'
@@ -176,33 +170,34 @@ c.NotebookApp.notebook_dir = '/root'
 c.NotebookApp.open_browser = False
 c.NotebookApp.password = ''
 c.NotebookApp.token = ''
+c.NotebookApp.allow_root = True
 ```
 
-### 1.3.2 [`context/jupyter/jupytertheme.sh`](https://github.com/djy-git/base_env/blob/main/context/jupyter/jupytertheme.sh)
-Apply `jupyter notebook` theme \
-Use `$ jt -r` if you want to reset jupyter theme
+### 1.3.2 [`context/jupyter/jupytertheme.sh`](https://github.com/djy-git/base_env/blob/main/context/jupyter/jupytertheme.sh): Apply `jupyter notebook` theme
+Reset `jupyter` theme: `$ jt -r`
 ```
+pip install jupyterthemes
 jt -t onedork -cellw 98% -f roboto -fs 10 -nfs 11 -tfs 11 -T
 ```
 
 
 ## 1.4 `context/bin`: Shell script files
-### 1.4.1 [`context/bin/entrypoint.sh`](https://github.com/djy-git/base_env/blob/main/context/bin/entrypoint.sh)
-`entrypoint` for image
+### 1.4.1 [`context/bin/entrypoint.sh`](https://github.com/djy-git/base_env/blob/main/context/bin/entrypoint.sh): `entrypoint` for image
 ```
 #!/bin/bash
 
+source ~/.bashrc
+
 # Account, bashrc, vim, jupyter setting
 cat /opt/docker/context/setting/account | chpasswd
-printf "\n# PATH \nexport PATH=$PATH" >> /root/.bashrc
 cat /opt/docker/context/setting/bashrc >> /root/.bashrc
 cat /opt/docker/context/setting/vimrc >> /usr/share/vim/vimrc
 jupyter notebook --generate-config && \
 cat /opt/docker/context/jupyter/jupyter_notebook_config.py >> /root/.jupyter/jupyter_notebook_config.py
 
 # Start ssh
-echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
-mkdir -p /run/sshd
+echo "PermitRootLogin yes" >> /etc/ssh/sshd_config && \
+mkdir -p /run/sshd && \
 service ssh start
 
 # Start jupyter
@@ -227,8 +222,7 @@ fi
 
 
 # 2. Dockerfile
-## 2.1 `djyoon0223/base:basic`
-[`base.basic.Dockerfile`](https://github.com/djy-git/base_env/blob/main/base.basic.Dockerfile)
+## 2.1 `djyoon0223/base:basic`: [`base.basic.Dockerfile`](https://github.com/djy-git/base_env/blob/main/base.basic.Dockerfile)
 
 ```dockerfile
 # syntax=docker/dockerfile:1
@@ -257,15 +251,12 @@ ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /usr/
 RUN chmod +x /usr/bin/tini
 
 # install fundamental packages
-COPY context/package/requirements_basic.apt /opt/docker/context/requirements_basic.apt
-COPY context/package/requirements_basic.pip /opt/docker/context/requirements_basic.pip
-RUN xargs apt-get install -y < /opt/docker/context/requirements_basic.apt && \
+COPY context/package/requirements_basic.apt /opt/docker/context/package/requirements_basic.apt
+COPY context/package/requirements_basic.pip /opt/docker/context/package/requirements_basic.pip
+RUN xargs apt-get install -y < /opt/docker/context/package/requirements_basic.apt && \
     apt-get clean && \
     rm -rf /var/lib/ap/lists/* && \
-    pip install -r /opt/docker/context/requirements_basic.pip
-
-# copy context directory
-COPY context /opt/docker/context
+    pip install -r /opt/docker/context/package/requirements_basic.pip
 
 ## create new env
 #RUN conda create -n full -c rapidsai -c nvidia -c conda-forge cudf=22.04 cuml=22.04 python=3.8 cudatoolkit=11.2 numpy=1.19 && \
@@ -278,20 +269,23 @@ COPY context /opt/docker/context
 #    pip install numpy==1.20
 #
 ## install additional apt packages
-#RUN xargs apt-get install -y < /opt/docker/context/requirements_full.apt && \
+#COPY context/package/requirements_full.apt /opt/docker/context/package/requirements_full.apt
+#COPY context/package/requirements_full.pip /opt/docker/context/package/requirements_full.pip
+#RUN xargs apt-get install -y < /opt/docker/context/package/requirements_full.apt && \
 #    apt-get clean && \
 #    rm -rf /var/lib/ap/lists/* && \
-#    pip install -r /opt/docker/context/requirements_basic.pip && \
-#    pip install -r /opt/docker/context/requirements_full.pip
+#    pip install -r /opt/docker/context/package/requirements_basic.pip && \
+#    pip install -r /opt/docker/context/package/requirements_full.pip
+
+# copy context directory
+COPY context /opt/docker/context
 
 # run entrypoint.sh
 ENTRYPOINT [ "/usr/bin/tini", "--", "/opt/docker/context/bin/entrypoint.sh" ]
 CMD [ "/bin/bash" ]
 ```
 
-## 2.2 `djyoon0223/base:full`
-[`base.full.Dockerfile`](https://github.com/djy-git/base_env/blob/main/base.full.Dockerfile)
-
+## 2.2 `djyoon0223/base:full`: [`base.full.Dockerfile`](https://github.com/djy-git/base_env/blob/main/base.full.Dockerfile)
 ```dockerfile
 # syntax=docker/dockerfile:1
 FROM nvidia/cuda:11.2.0-cudnn8-devel-ubuntu20.04
@@ -319,15 +313,12 @@ ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /usr/
 RUN chmod +x /usr/bin/tini
 
 # install fundamental packages
-COPY context/package/requirements_basic.apt /opt/docker/context/requirements_basic.apt
-COPY context/package/requirements_basic.pip /opt/docker/context/requirements_basic.pip
-RUN xargs apt-get install -y < /opt/docker/context/requirements_basic.apt && \
+COPY context/package/requirements_basic.apt /opt/docker/context/package/requirements_basic.apt
+COPY context/package/requirements_basic.pip /opt/docker/context/package/requirements_basic.pip
+RUN xargs apt-get install -y < /opt/docker/context/package/requirements_basic.apt && \
     apt-get clean && \
     rm -rf /var/lib/ap/lists/* && \
-    pip install -r /opt/docker/context/requirements_basic.pip
-
-# copy context directory
-COPY context /opt/docker/context
+    pip install -r /opt/docker/context/package/requirements_basic.pip
 
 # create new env
 RUN conda create -n full -c rapidsai -c nvidia -c conda-forge cudf=22.04 cuml=22.04 python=3.8 cudatoolkit=11.2 numpy=1.19 && \
@@ -340,11 +331,16 @@ RUN pip install pycaret[full]==2.3.10 --ignore-installed && \
     pip install numpy==1.20
 
 # install additional apt packages
+COPY context/package/requirements_full.apt /opt/docker/context/package/requirements_full.apt
+COPY context/package/requirements_full.pip /opt/docker/context/package/requirements_full.pip
 RUN xargs apt-get install -y < /opt/docker/context/package/requirements_full.apt && \
     apt-get clean && \
     rm -rf /var/lib/ap/lists/* && \
     pip install -r /opt/docker/context/package/requirements_basic.pip && \
     pip install -r /opt/docker/context/package/requirements_full.pip
+
+# copy context directory
+COPY context /opt/docker/context
 
 # run entrypoint.sh
 ENTRYPOINT [ "/usr/bin/tini", "--", "/opt/docker/context/bin/entrypoint.sh" ]
