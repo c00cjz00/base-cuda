@@ -15,8 +15,9 @@ services:
       - 18889:8889
     volumes:
       - /root/project:/root/project
-    restart: always
     hostname: "base"
+    restart: always
+    tty: true
     ipc: host
     privileged: true
     deploy:
