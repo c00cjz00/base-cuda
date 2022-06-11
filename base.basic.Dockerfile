@@ -24,15 +24,12 @@ ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /usr/
 RUN chmod +x /usr/bin/tini
 
 # install fundamental packages
-COPY context/package/requirements_basic.apt /opt/docker/context/requirements_basic.apt
-COPY context/package/requirements_basic.pip /opt/docker/context/requirements_basic.pip
-RUN xargs apt-get install -y < /opt/docker/context/requirements_basic.apt && \
+COPY context/package/requirements_basic.apt /opt/docker/context/package/requirements_basic.apt
+COPY context/package/requirements_basic.pip /opt/docker/context/package/requirements_basic.pip
+RUN xargs apt-get install -y < /opt/docker/context/package/requirements_basic.apt && \
     apt-get clean && \
     rm -rf /var/lib/ap/lists/* && \
-    pip install -r /opt/docker/context/requirements_basic.pip
-
-# copy context directory
-COPY context /opt/docker/context
+    pip install -r /opt/docker/context/package/requirements_basic.pip
 
 ## create new env
 #RUN conda create -n full -c rapidsai -c nvidia -c conda-forge cudf=22.04 cuml=22.04 python=3.8 cudatoolkit=11.2 numpy=1.19 && \
@@ -45,11 +42,16 @@ COPY context /opt/docker/context
 #    pip install numpy==1.20
 #
 ## install additional apt packages
-#RUN xargs apt-get install -y < /opt/docker/context/requirements_full.apt && \
+#COPY context/package/requirements_full.apt /opt/docker/context/package/requirements_full.apt
+#COPY context/package/requirements_full.pip /opt/docker/context/package/requirements_full.pip
+#RUN xargs apt-get install -y < /opt/docker/context/package/requirements_full.apt && \
 #    apt-get clean && \
 #    rm -rf /var/lib/ap/lists/* && \
-#    pip install -r /opt/docker/context/requirements_basic.pip && \
-#    pip install -r /opt/docker/context/requirements_full.pip
+#    pip install -r /opt/docker/context/package/requirements_basic.pip && \
+#    pip install -r /opt/docker/context/package/requirements_full.pip
+
+# copy context directory
+COPY context /opt/docker/context
 
 # run entrypoint.sh
 ENTRYPOINT [ "/usr/bin/tini", "--", "/opt/docker/context/bin/entrypoint.sh" ]
