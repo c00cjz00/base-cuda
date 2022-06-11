@@ -78,7 +78,8 @@ services:
 # Image building
 
 # 1. `context`: Commonly used files when building images
-## 1.1 [`context/.bashrc`](https://github.com/djy-git/base_env/blob/main/context/.bashrc)
+## 1.1 `context/setting`: Setting files
+### 1.1.1 [`context/setting/.bashrc`](https://github.com/djy-git/base_env/blob/main/context/setting/.bashrc)
 Additional `bash` setting
 ```
 ### custom configurations
@@ -92,31 +93,13 @@ alias jn='jupyter notebook --allow-root &'
 export LS_COLORS='di=00;36:fi=00;37'
 ```
 
-## 1.2 [`context/account`](https://github.com/djy-git/base_env/blob/main/context/account)
+### 1.1.2 [`context/setting/account`](https://github.com/djy-git/base_env/blob/main/context/setting/account)
 Format: `ID:PASSWORD`
 ```
 root:1234
 ```
 
-## 1.3 [`context/jupyter_notebook_config.py`](https://github.com/djy-git/base_env/blob/main/context/jupyter_notebook_config.py)
-Additional `jupyter notebook` setting
-```
-c.NotebookApp.allow_origin = '*'
-c.NotebookApp.ip = '*'
-c.NotebookApp.notebook_dir = '/root'
-c.NotebookApp.open_browser = False
-c.NotebookApp.password = ''
-c.NotebookApp.token = ''
-```
-
-## 1.4 [`context/jupytertheme.sh`](https://github.com/djy-git/base_env/blob/main/context/jupytertheme.sh)
-`jupyter notebook` theme \
-Use `$ jt -r` if you want to reset jupyter theme
-```
-jt -t onedork -cellw 98% -f roboto -fs 10 -nfs 11 -tfs 11 -T
-```
-
-## 1.5 [`context/vimrc`](https://github.com/djy-git/base_env/blob/main/context/vimrc)
+### 1.1.3 [`context/setting/vimrc`](https://github.com/djy-git/base_env/blob/main/context/setting/vimrc)
 Additional `vim` setting
 ```
 set showcmd		" Show (partial) command in status line.
@@ -144,7 +127,8 @@ set viminfo=
 colorscheme desert
 ```
 
-## 1.6 [`context/requirements_basic.apt`](https://github.com/djy-git/base_env/blob/main/context/requirements_basic.apt)
+## 1.2 `package`: `apt`, `pip` package files
+### 1.2.1 [`context/package/requirements_basic.apt`](https://github.com/djy-git/base_env/blob/main/context/package/requirements_basic.apt)
 `apt` package list for `djyoon0223/base:basic`
 ```
 wget
@@ -156,7 +140,7 @@ vim
 openssh-server
 ```
 
-## 1.7 [`context/requirements_full.apt`](https://github.com/djy-git/base_env/blob/main/context/requirements_full.apt)
+### 1.2.2 [`context/package/requirements_full.apt`](https://github.com/djy-git/base_env/blob/main/context/package/requirements_full.apt)
 `apt` package list for `djyoon0223/base:full`
 ```
 htop
@@ -169,16 +153,76 @@ unzip
 libgl1-mesa-glx
 ```
 
-## 1.8 [`context/requirements_basic.pip`](https://github.com/djy-git/base_env/blob/main/context/requirements_basic.pip)
+### 1.2.3 [`context/package/requirements_basic.pip`](https://github.com/djy-git/base_env/blob/main/context/package/requirements_basic.pip)
 `pip` package list for `djyoon0223/base:basic`
 ```
 jupyter
 jupyterlab
 ```
 
-## 1.9 [`context/requirements_full.pip`](https://github.com/djy-git/base_env/blob/main/context/requirements_full.pip)
+### 1.2.4 [`context/package/requirements_full.pip`](https://github.com/djy-git/base_env/blob/main/context/package/requirements_full.pip)
 `pip` package list for `djyoon0223/base:full`
 ```
+```
+
+
+## 1.3 `context/jupyter`: `jupyter notebook` setting files
+### 1.3.1 [`context/jupyter/jupyter_notebook_config.py`](https://github.com/djy-git/base_env/blob/main/context/jupyter/jupyter_notebook_config.py)
+Additional `jupyter notebook` setting
+```
+c.NotebookApp.allow_origin = '*'
+c.NotebookApp.ip = '*'
+c.NotebookApp.notebook_dir = '/root'
+c.NotebookApp.open_browser = False
+c.NotebookApp.password = ''
+c.NotebookApp.token = ''
+```
+
+### 1.3.2 [`context/jupyter/jupytertheme.sh`](https://github.com/djy-git/base_env/blob/main/context/jupyter/jupytertheme.sh)
+Apply `jupyter notebook` theme \
+Use `$ jt -r` if you want to reset jupyter theme
+```
+jt -t onedork -cellw 98% -f roboto -fs 10 -nfs 11 -tfs 11 -T
+```
+
+
+## 1.4 `context/bin`: Shell script files
+### 1.4.1 [`context/bin/entrypoint.sh`](https://github.com/djy-git/base_env/blob/main/context/bin/entrypoint.sh)
+`entrypoint` for image
+```
+#!/bin/bash
+
+# Account, bashrc, vim, jupyter setting
+cat /opt/docker/context/setting/account | chpasswd
+printf "\n# PATH \nexport PATH=$PATH" >> /root/.bashrc
+cat /opt/docker/context/setting/bashrc >> /root/.bashrc
+cat /opt/docker/context/setting/vimrc >> /usr/share/vim/vimrc
+jupyter notebook --generate-config && \
+cat /opt/docker/context/jupyter/jupyter_notebook_config.py >> /root/.jupyter/jupyter_notebook_config.py
+
+# Start ssh
+echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
+mkdir -p /run/sshd
+service ssh start
+
+# Start jupyter
+nohup jupyter notebook > /dev/null 2>&1 &
+
+# Check if we should quote the exec params
+UNQUOTE=false
+if [ "$1" = "--unquote-exec" ]; then
+  UNQUOTE=true
+  shift
+elif [ -n "${UNQUOTE_EXEC}" ] && [[ "${UNQUOTE_EXEC}" =~ ^(true|yes|y)$ ]]; then
+  UNQUOTE=true
+fi
+
+# Run whatever the user wants.
+if [ "${UNQUOTE}" = "true" ]; then
+  exec $@
+else
+  exec "$@"
+fi
 ```
 
 
@@ -212,50 +256,37 @@ ENV TINI_VERSION v0.16.1
 ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /usr/bin/tini
 RUN chmod +x /usr/bin/tini
 
-# create new env
+# install fundamental packages
+COPY context/package/requirements_basic.apt /opt/docker/context/requirements_basic.apt
+COPY context/package/requirements_basic.pip /opt/docker/context/requirements_basic.pip
+RUN xargs apt-get install -y < /opt/docker/context/requirements_basic.apt && \
+    apt-get clean && \
+    rm -rf /var/lib/ap/lists/* && \
+    pip install -r /opt/docker/context/requirements_basic.pip
+
+# copy context directory
+COPY context /opt/docker/context
+
+## create new env
 #RUN conda create -n full -c rapidsai -c nvidia -c conda-forge cudf=22.04 cuml=22.04 python=3.8 cudatoolkit=11.2 numpy=1.19 && \
-#    echo "conda activate full" >> ~/.bashrc
+#    echo "conda activate full" >> /root/.bashrc
 #SHELL ["conda", "run", "-n", "full", "/bin/bash", "-c"]
 #RUN conda install ipykernel && \
 #    python -m ipykernel install --user --name full --display-name "full"
 #RUN pip install pycaret[full]==2.3.10 --ignore-installed && \
 #    pip install tensorflow==2.9.1 torch==1.11.0 torchvision==0.12.0 torchaudio==0.11.0 opencv-python==4.5.5.64 && \
 #    pip install numpy==1.20
+#
+## install additional apt packages
+#RUN xargs apt-get install -y < /opt/docker/context/requirements_full.apt && \
+#    apt-get clean && \
+#    rm -rf /var/lib/ap/lists/* && \
+#    pip install -r /opt/docker/context/requirements_basic.pip && \
+#    pip install -r /opt/docker/context/requirements_full.pip
 
-# ssh setting
-RUN apt-get install -y openssh-server && \
-    echo "PermitRootLogin yes" >> /etc/ssh/sshd_config && \
-    mkdir -p /run/sshd
-
-# jupyter setting
-RUN pip install jupyter jupyterlab && \
-    jupyter notebook --generate-config
-
-# copy context directory
-COPY context context
-
-# bashrc, vim, account, jupyter setting
-RUN printf "\n# PATH \nexport PATH=$PATH" >> .bashrc && \
-    cat context/.bashrc >> .bashrc && \
-    apt-get install -y vim && cat context/vimrc >> /usr/share/vim/vimrc && \
-    cat context/account | chpasswd && \
-    cat context/jupyter_notebook_config.py >> .jupyter/jupyter_notebook_config.py
-
-# install apt, pip packages
-RUN xargs apt-get install -y < context/requirements_basic.apt && \
-#    xargs apt-get install -y < context/requirements_full.apt && \
-    apt-get clean && \
-    rm -rf /var/lib/ap/lists/*
-
-# install pip packages
-RUN pip install -r context/requirements_basic.pip
-#    pip install -r context/requirements_full.pip
-
-# clean
-RUN rm -r context
-
-# open ssh, jupyter server
-ENTRYPOINT service ssh start && jupyter notebook --allow-root
+# run entrypoint.sh
+ENTRYPOINT [ "/usr/bin/tini", "--", "/opt/docker/context/bin/entrypoint.sh" ]
+CMD [ "/bin/bash" ]
 ```
 
 ## 2.2 `djyoon0223/base:full`
@@ -287,9 +318,20 @@ ENV TINI_VERSION v0.16.1
 ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /usr/bin/tini
 RUN chmod +x /usr/bin/tini
 
+# install fundamental packages
+COPY context/package/requirements_basic.apt /opt/docker/context/requirements_basic.apt
+COPY context/package/requirements_basic.pip /opt/docker/context/requirements_basic.pip
+RUN xargs apt-get install -y < /opt/docker/context/requirements_basic.apt && \
+    apt-get clean && \
+    rm -rf /var/lib/ap/lists/* && \
+    pip install -r /opt/docker/context/requirements_basic.pip
+
+# copy context directory
+COPY context /opt/docker/context
+
 # create new env
 RUN conda create -n full -c rapidsai -c nvidia -c conda-forge cudf=22.04 cuml=22.04 python=3.8 cudatoolkit=11.2 numpy=1.19 && \
-    echo "conda activate full" >> ~/.bashrc
+    echo "conda activate full" >> /root/.bashrc
 SHELL ["conda", "run", "-n", "full", "/bin/bash", "-c"]
 RUN conda install ipykernel && \
     python -m ipykernel install --user --name full --display-name "full"
@@ -297,38 +339,14 @@ RUN pip install pycaret[full]==2.3.10 --ignore-installed && \
     pip install tensorflow==2.9.1 torch==1.11.0 torchvision==0.12.0 torchaudio==0.11.0 opencv-python==4.5.5.64 && \
     pip install numpy==1.20
 
-# ssh setting
-RUN apt-get install -y openssh-server && \
-    echo "PermitRootLogin yes" >> /etc/ssh/sshd_config && \
-    mkdir -p /run/sshd
-
-# jupyter setting
-RUN pip install jupyter jupyterlab && \
-    jupyter notebook --generate-config
-
-# copy context directory
-COPY context context
-
-# bashrc, vim, account, jupyter setting
-RUN printf "\n# PATH \nexport PATH=$PATH" >> .bashrc && \
-    cat context/.bashrc >> .bashrc && \
-    apt-get install -y vim && cat context/vimrc >> /usr/share/vim/vimrc && \
-    cat context/account | chpasswd && \
-    cat context/jupyter_notebook_config.py >> .jupyter/jupyter_notebook_config.py
-
-# install apt, pip packages
-RUN xargs apt-get install -y < context/requirements_basic.apt && \
-    xargs apt-get install -y < context/requirements_full.apt && \
+# install additional apt packages
+RUN xargs apt-get install -y < /opt/docker/context/package/requirements_full.apt && \
     apt-get clean && \
-    rm -rf /var/lib/ap/lists/*
+    rm -rf /var/lib/ap/lists/* && \
+    pip install -r /opt/docker/context/package/requirements_basic.pip && \
+    pip install -r /opt/docker/context/package/requirements_full.pip
 
-# install pip packages
-RUN pip install -r context/requirements_basic.pip && \
-    pip install -r context/requirements_full.pip
-
-# clean
-RUN rm -r context
-
-# open ssh, jupyter server
-ENTRYPOINT service ssh start && jupyter notebook --allow-root
+# run entrypoint.sh
+ENTRYPOINT [ "/usr/bin/tini", "--", "/opt/docker/context/bin/entrypoint.sh" ]
+CMD [ "/bin/bash" ]
 ```
