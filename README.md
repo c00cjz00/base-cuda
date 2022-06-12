@@ -90,8 +90,9 @@ export PATH=$PATH:.
 # alias
 alias vb='vi ~/.bashrc'
 alias sb='source ~/.bashrc'
-alias wn='watch -n 0.5 nvidia-smi'
-alias jn='jupyter notebook --allow-root &'
+alias wn='watch -n 0.5'
+alias wnnv='watch -n 0.5 nvidia-smi'
+alias jn='nohup jupyter notebook > /dev/null 2>&1 &'
 ```
 
 ### 1.1.2 [`context/setting/account`](https://github.com/djy-git/base_env/blob/main/context/setting/account): `USER:PASSWORD`
