@@ -31,14 +31,14 @@ RUN xargs apt-get install -y < /opt/docker/context/package/requirements_basic.ap
     rm -rf /var/lib/ap/lists/* && \
     pip install -r /opt/docker/context/package/requirements_basic.pip
 
-## create environment: caret (rapids + pycaret)
-#RUN conda create -n caret -c rapidsai -c nvidia -c conda-forge cuml=22.02 cudf=22.02 python=3.8 cudatoolkit=11.4
-#SHELL ["conda", "run", "-n", "caret", "/bin/bash", "-c"]
-#RUN pip install --pre pycaret
-#RUN conda install -c nvidia cuda-python=11.7.0
-#RUN conda install ipykernel && \
-#    python -m ipykernel install --user --name caret --display-name "caret"
-#
+# create environment: caret (rapids + pycaret)
+RUN conda create -n caret -c rapidsai -c nvidia -c conda-forge cuml=22.02 cudf=22.02 python=3.8 cudatoolkit=11.4
+SHELL ["conda", "run", "-n", "caret", "/bin/bash", "-c"]
+RUN pip install --pre pycaret
+RUN conda install -c nvidia cuda-python=11.7.0
+RUN conda install ipykernel && \
+    python -m ipykernel install --user --name caret --display-name "caret"
+
 ## create environment: tf_torch (rapids + tensorflow + torch)
 #RUN conda create -n tf_torch -c rapidsai -c nvidia -c pytorch -c conda-forge rapids=22.02 python=3.8 cudatoolkit=11.3 pytorch=1.12 torchvision=0.13 torchaudio=0.12
 #SHELL ["conda", "run", "-n", "tf_torch", "/bin/bash", "-c"]
@@ -46,19 +46,19 @@ RUN xargs apt-get install -y < /opt/docker/context/package/requirements_basic.ap
 #RUN conda install -c nvidia cuda-python=11.7.0
 #RUN conda install ipykernel && \
 #    python -m ipykernel install --user --name tf_torch --display-name "tf_torch"
-#
-## install additional apt packages
-#COPY context/package/requirements_expansion.apt /opt/docker/context/package/requirements_expansion.apt
-#COPY context/package/requirements_expansion.pip /opt/docker/context/package/requirements_expansion.pip
-#RUN xargs apt-get install -y < /opt/docker/context/package/requirements_expansion.apt && \
-#    apt-get clean && \
-#    rm -rf /var/lib/ap/lists/*
-#
-## install additional pip packages for environment caret
-#SHELL ["conda", "run", "-n", "caret", "/bin/bash", "-c"]
-#RUN pip install -r /opt/docker/context/package/requirements_basic.pip && \
-#    pip install -r /opt/docker/context/package/requirements_expansion.pip
-#
+
+# install additional apt packages
+COPY context/package/requirements_expansion.apt /opt/docker/context/package/requirements_expansion.apt
+COPY context/package/requirements_expansion.pip /opt/docker/context/package/requirements_expansion.pip
+RUN xargs apt-get install -y < /opt/docker/context/package/requirements_expansion.apt && \
+    apt-get clean && \
+    rm -rf /var/lib/ap/lists/*
+
+# install additional pip packages for environment caret
+SHELL ["conda", "run", "-n", "caret", "/bin/bash", "-c"]
+RUN pip install -r /opt/docker/context/package/requirements_basic.pip && \
+    pip install -r /opt/docker/context/package/requirements_expansion.pip
+
 ## install additional pip packages for environment tf_torch
 #SHELL ["conda", "run", "-n", "tf_torch", "/bin/bash", "-c"]
 #RUN pip install -r /opt/docker/context/package/requirements_basic.pip && \
