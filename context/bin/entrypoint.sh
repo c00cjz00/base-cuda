@@ -1,17 +1,8 @@
 #!/bin/bash
 
-source ~/.bashrc
-
-# Account, bashrc, vim, jupyter setting
-cat /opt/docker/context/setting/account | chpasswd
-cat /opt/docker/context/setting/bashrc >> /root/.bashrc
-cat /opt/docker/context/setting/vimrc >> /usr/share/vim/vimrc
-jupyter notebook --generate-config && \
-cat /opt/docker/context/jupyter/jupyter_notebook_config.py >> /root/.jupyter/jupyter_notebook_config.py
+source /root/.bashrc
 
 # Start ssh
-echo "PermitRootLogin yes" >> /etc/ssh/sshd_config && \
-mkdir -p /run/sshd && \
 service ssh start
 
 # Start jupyter

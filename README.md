@@ -196,18 +196,9 @@ jt -t onedork -cellw 98% -f roboto -fs 10 -nfs 11 -tfs 11 -T
 ```
 #!/bin/bash
 
-source ~/.bashrc
-
-# Account, bashrc, vim, jupyter setting
-cat /opt/docker/context/setting/account | chpasswd
-cat /opt/docker/context/setting/bashrc >> /root/.bashrc
-cat /opt/docker/context/setting/vimrc >> /usr/share/vim/vimrc
-jupyter notebook --generate-config && \
-cat /opt/docker/context/jupyter/jupyter_notebook_config.py >> /root/.jupyter/jupyter_notebook_config.py
+source /root/.bashrc
 
 # Start ssh
-echo "PermitRootLogin yes" >> /etc/ssh/sshd_config && \
-mkdir -p /run/sshd && \
 service ssh start
 
 # Start jupyter
@@ -303,9 +294,20 @@ RUN xargs apt-get install -y < /opt/docker/context/package/requirements_basic.ap
 # copy context directory
 COPY context /opt/docker/context
 
+# account, bashrc, vim setting
+RUN cat /opt/docker/context/setting/account | chpasswd && \
+    cat /opt/docker/context/setting/bashrc >> /root/.bashrc && \
+    cat /opt/docker/context/setting/vimrc >> /usr/share/vim/vimrc && \
+    echo "PermitRootLogin yes" >> /etc/ssh/sshd_config && \
+    mkdir -p /run/sshd
+
+# jupyter setting
+RUN jupyter notebook --generate-config && \
+    cat /opt/docker/context/jupyter/jupyter_notebook_config.py >> /root/.jupyter/jupyter_notebook_config.py
+
 # run entrypoint.sh
 RUN chmod +x /opt/docker/context/bin/entrypoint.sh
-ENTRYPOINT [ "/usr/bin/tini", "--", "/opt/docker/context/bin/entrypoint.sh" ]
+ENTRYPOINT [ "/opt/docker/context/bin/entrypoint.sh" ]
 CMD [ "/bin/bash" ]
 ```
 
@@ -380,9 +382,20 @@ RUN pip install -r /opt/docker/context/package/requirements_basic.pip && \
 # copy context directory
 COPY context /opt/docker/context
 
+# account, bashrc, vim setting
+RUN cat /opt/docker/context/setting/account | chpasswd && \
+    cat /opt/docker/context/setting/bashrc >> /root/.bashrc && \
+    cat /opt/docker/context/setting/vimrc >> /usr/share/vim/vimrc && \
+    echo "PermitRootLogin yes" >> /etc/ssh/sshd_config && \
+    mkdir -p /run/sshd
+
+# jupyter setting
+RUN jupyter notebook --generate-config && \
+    cat /opt/docker/context/jupyter/jupyter_notebook_config.py >> /root/.jupyter/jupyter_notebook_config.py
+
 # run entrypoint.sh
 RUN chmod +x /opt/docker/context/bin/entrypoint.sh
-ENTRYPOINT [ "/usr/bin/tini", "--", "/opt/docker/context/bin/entrypoint.sh" ]
+ENTRYPOINT [ "/opt/docker/context/bin/entrypoint.sh" ]
 CMD [ "/bin/bash" ]
 ```
 
@@ -457,9 +470,20 @@ RUN pip install -r /opt/docker/context/package/requirements_basic.pip && \
 # copy context directory
 COPY context /opt/docker/context
 
+# account, bashrc, vim setting
+RUN cat /opt/docker/context/setting/account | chpasswd && \
+    cat /opt/docker/context/setting/bashrc >> /root/.bashrc && \
+    cat /opt/docker/context/setting/vimrc >> /usr/share/vim/vimrc && \
+    echo "PermitRootLogin yes" >> /etc/ssh/sshd_config && \
+    mkdir -p /run/sshd
+
+# jupyter setting
+RUN jupyter notebook --generate-config && \
+    cat /opt/docker/context/jupyter/jupyter_notebook_config.py >> /root/.jupyter/jupyter_notebook_config.py
+
 # run entrypoint.sh
 RUN chmod +x /opt/docker/context/bin/entrypoint.sh
-ENTRYPOINT [ "/usr/bin/tini", "--", "/opt/docker/context/bin/entrypoint.sh" ]
+ENTRYPOINT [ "/opt/docker/context/bin/entrypoint.sh" ]
 CMD [ "/bin/bash" ]
 ```
 
@@ -534,8 +558,19 @@ RUN pip install -r /opt/docker/context/package/requirements_basic.pip && \
 # copy context directory
 COPY context /opt/docker/context
 
+# account, bashrc, vim setting
+RUN cat /opt/docker/context/setting/account | chpasswd && \
+    cat /opt/docker/context/setting/bashrc >> /root/.bashrc && \
+    cat /opt/docker/context/setting/vimrc >> /usr/share/vim/vimrc && \
+    echo "PermitRootLogin yes" >> /etc/ssh/sshd_config && \
+    mkdir -p /run/sshd
+
+# jupyter setting
+RUN jupyter notebook --generate-config && \
+    cat /opt/docker/context/jupyter/jupyter_notebook_config.py >> /root/.jupyter/jupyter_notebook_config.py
+
 # run entrypoint.sh
 RUN chmod +x /opt/docker/context/bin/entrypoint.sh
-ENTRYPOINT [ "/usr/bin/tini", "--", "/opt/docker/context/bin/entrypoint.sh" ]
+ENTRYPOINT [ "/opt/docker/context/bin/entrypoint.sh" ]
 CMD [ "/bin/bash" ]
 ```

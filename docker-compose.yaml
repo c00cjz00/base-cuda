@@ -1,6 +1,6 @@
 version: "3.8"
 services:
-  compute_server_tmp:
+  compute_server:
     image: djyoon0223/base:full
     ports:
       - 10022:22
