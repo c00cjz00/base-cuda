@@ -1,5 +1,5 @@
 # Prepared CUDA based Image for Machine Learning Project
-- **GitHub**: [djyoon0223/base_env](https://github.com/djy-git/base_env)
+- **GitHub**: [djyoon0223/base](https://github.com/djy-git/base)
 - **DockerHub**: [djyoon0223/base](https://hub.docker.com/repository/docker/djyoon0223/base)
 ```
 $ docker pull djyoon0223/base:basic
@@ -7,6 +7,7 @@ $ docker pull djyoon0223/base:caret
 $ docker pull djyoon0223/base:tf_torch
 $ docker pull djyoon0223/base:full
 ```
+
 
 # Ⅰ. Base Image
 [`nvidia/cuda:11.3.0-cudnn8-devel-ubuntu20.04`](https://hub.docker.com/r/nvidia/cuda/tags)
