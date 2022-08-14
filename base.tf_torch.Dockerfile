@@ -32,10 +32,10 @@ RUN xargs apt-get install -y < /opt/docker/context/package/requirements_basic.ap
     pip install -r /opt/docker/context/package/requirements_basic.pip
 
 ## create environment: caret (rapids + pycaret)
-#RUN conda create -n caret -c rapidsai -c nvidia -c conda-forge cuml=22.02 cudf=22.02 python=3.8 cudatoolkit=11.4
+#RUN conda create -n caret -c rapidsai -c nvidia -c conda-forge cuml=0.19 python=3.8 cudatoolkit=11.2
 #SHELL ["conda", "run", "-n", "caret", "/bin/bash", "-c"]
-#RUN pip install --pre pycaret
-#RUN conda install -c nvidia cuda-python=11.7.0
+#RUN rm -r /opt/conda/envs/caret/lib/python3.8/site-packages/llvmlite*
+#RUN pip install pycaret[full]
 #RUN conda install ipykernel && \
 #    python -m ipykernel install --user --name caret --display-name "caret"
 
