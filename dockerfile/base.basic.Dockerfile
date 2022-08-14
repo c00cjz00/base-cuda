@@ -10,18 +10,18 @@ ENV PATH $PATH:/opt/conda/bin:.
 WORKDIR /root
 
 # install miniconda
-#RUN apt-get update && \
-#    apt-get install -y wget && \
-#    wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-py38_4.12.0-Linux-x86_64.sh -O ~/miniconda.sh && \
-#    /bin/bash ~/miniconda.sh -b -p /opt/conda && \
-#    rm ~/miniconda.sh && \
-#    /opt/conda/bin/conda clean -tipsy && \
-#    ln -s /opt/conda/etc/profile.d/conda.sh /etc/profile.d/conda.sh && \
-#    echo ". /opt/conda/etc/profile.d/conda.sh" >> ~/.bashrc && \
-#    echo "conda activate base" >> ~/.bashrc
-#ENV TINI_VERSION v0.16.1
-#ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /usr/bin/tini
-#RUN chmod +x /usr/bin/tini
+RUN apt-get update && \
+    apt-get install -y wget && \
+    wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-py38_4.12.0-Linux-x86_64.sh -O ~/miniconda.sh && \
+    /bin/bash ~/miniconda.sh -b -p /opt/conda && \
+    rm ~/miniconda.sh && \
+    /opt/conda/bin/conda clean -tipsy && \
+    ln -s /opt/conda/etc/profile.d/conda.sh /etc/profile.d/conda.sh && \
+    echo ". /opt/conda/etc/profile.d/conda.sh" >> ~/.bashrc && \
+    echo "conda activate base" >> ~/.bashrc
+ENV TINI_VERSION v0.16.1
+ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /usr/bin/tini
+RUN chmod +x /usr/bin/tini
 
 # install basic packages
 COPY context/package/requirements_basic.apt /opt/docker/context/package/requirements_basic.apt
@@ -38,8 +38,6 @@ RUN xargs apt-get install -y < /opt/docker/context/package/requirements_basic.ap
 #RUN pip install pycaret[full]==2.3.10
 #RUN conda install ipykernel && \
 #    python -m ipykernel install --user --name caret --display-name "caret"
-#COPY context/test/caret.py /opt/docker/context/test/caret.py
-#RUN pytest /opt/docker/context/test/caret.py
 #
 ## create environment: tf_torch (rapids + tensorflow + torch)
 #RUN conda create -n tf_torch -c rapidsai -c nvidia -c pytorch -c conda-forge rapids=22.02 python=3.8 cudatoolkit=11.3 pytorch=1.12 torchvision=0.13 torchaudio=0.12
@@ -48,8 +46,6 @@ RUN xargs apt-get install -y < /opt/docker/context/package/requirements_basic.ap
 #RUN conda install -c nvidia cuda-python=11.7.0
 #RUN conda install ipykernel && \
 #    python -m ipykernel install --user --name tf_torch --display-name "tf_torch"
-#COPY context/test/tf_torch.py /opt/docker/context/test/tf_torch.py
-#RUN pytest /opt/docker/context/test/tf_torch.py
 #
 ## install additional apt packages
 #COPY context/package/requirements_expansion.apt /opt/docker/context/package/requirements_expansion.apt

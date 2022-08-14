@@ -6,5 +6,5 @@ def test():
 
     data = get_data('diabetes')
     setup(data, target='Class variable', use_gpu=True, silent=True)
-    # assert tf.test.is_gpu_available()
-    # assert torch.cuda.is_available()
+    # assert tf.config.list_physical_devices('GPU'), "There are no GPUs available for TensorFlow!"
+    # assert torch.cuda.is_available(), "There are no GPUs available for PyTorch!"
