@@ -11,7 +11,7 @@ $ docker pull djyoon0223/base:full
 
 # Ⅰ. Base Image
 [`nvidia/cuda:11.3.0-cudnn8-devel-ubuntu20.04`](https://hub.docker.com/r/nvidia/cuda/tags)
-
+3
 
 # Ⅱ. Tag
 1. `djyoon0223/base:basic`
@@ -26,12 +26,12 @@ $ docker pull djyoon0223/base:full
 
 
 # Ⅲ. Usage
-## 1. `docker run`
+## 1. [`docker run`](https://github.com/djy-git/base/blob/main/docker-run.sh)
 ```
-$ sudo docker run \
+sudo docker run \
 --name compute_server \
 --hostname base \
---gpus '"device=0"' \  # --gpus all 
+--gpus '"device=0"' \ 
 --ipc host \
 --restart always \
 --privileged \
@@ -51,7 +51,7 @@ djyoon0223/base:full
 ```
 
 ## 2. `docker-compose`
-[`docker-compose.yaml`](https://github.com/djy-git/base_env/blob/main/docker-compose.yaml)
+[`docker-compose.yaml`](https://github.com/djy-git/base/blob/main/docker-compose.yaml)
 ```
 version: "3.8"
 services:
@@ -93,52 +93,47 @@ services:
 # Ⅳ. Building Image
 ## 1. `context`: Commonly used files for building images
 ### 1.1 `context/setting`: `bashrc`, `account`, `vimrc` Settings
-#### 1.1.1 [`context/setting/bashrc`](https://github.com/djy-git/base_env/blob/main/context/setting/bashrc)
+#### 1.1.1 [`context/setting/bashrc`](https://github.com/djy-git/base/blob/main/context/setting/bashrc)
 Additional `bash` setting
 
-
-#### 1.1.2 [`context/setting/account`](https://github.com/djy-git/base_env/blob/main/context/setting/account)
+#### 1.1.2 [`context/setting/account`](https://github.com/djy-git/base/blob/main/context/setting/account)
 `USER:PASSWORD`
 
-#### 1.1.3 [`context/setting/vimrc`](https://github.com/djy-git/base_env/blob/main/context/setting/vimrc)
+#### 1.1.3 [`context/setting/vimrc`](https://github.com/djy-git/base/blob/main/context/setting/vimrc)
 Additional `vim` setting
 
-### 1.2 `package`: `apt`, `pip` packages
-#### 1.2.1 [`context/package/requirements_basic.apt`](https://github.com/djy-git/base_env/blob/main/context/package/requirements_basic.apt)
+### 1.2 `context/package`: `apt`, `pip` packages
+#### 1.2.1 [`context/package/requirements_basic.apt`](https://github.com/djy-git/base/blob/main/context/package/requirements_basic.apt)
 Basic `apt` packages
 
-
-#### 1.2.2 [`context/package/requirements_expansion.apt`](https://github.com/djy-git/base_env/blob/main/context/package/requirements_expansion.apt)
+#### 1.2.2 [`context/package/requirements_expansion.apt`](https://github.com/djy-git/base/blob/main/context/package/requirements_expansion.apt)
 Expansion `apt` packages 
 
-#### 1.2.3 [`context/package/requirements_basic.pip`](https://github.com/djy-git/base_env/blob/main/context/package/requirements_basic.pip)
+#### 1.2.3 [`context/package/requirements_basic.pip`](https://github.com/djy-git/base/blob/main/context/package/requirements_basic.pip)
 Basic `pip` packages
 
-#### 1.2.4 [`context/package/requirements_expansion.pip`](https://github.com/djy-git/base_env/blob/main/context/package/requirements_expansion.pip)
+#### 1.2.4 [`context/package/requirements_expansion.pip`](https://github.com/djy-git/base/blob/main/context/package/requirements_expansion.pip)
 Expansion `pip` packages
 
 
 ### 1.3 `context/jupyter`: `jupyter` settings
-#### 1.3.1 [`context/jupyter/jupyter_notebook_config.py`](https://github.com/djy-git/base_env/blob/main/context/jupyter/jupyter_notebook_config.py)
+#### 1.3.1 [`context/jupyter/jupyter_notebook_config.py`](https://github.com/djy-git/base/blob/main/context/jupyter/jupyter_notebook_config.py)
 `jupyter` setting
 
-#### 1.3.2 [`context/jupyter/jupytertheme.sh`](https://github.com/djy-git/base_env/blob/main/context/jupyter/jupytertheme.sh)
+#### 1.3.2 [`context/jupyter/jupytertheme.sh`](https://github.com/djy-git/base/blob/main/context/jupyter/jupytertheme.sh)
 Apply `jupyter` theme (Reset `jupyter` theme: `$ jt -r`)
 
 ### 1.4 `context/bin`: Shell scripts
-#### 1.4.1 [`context/bin/entrypoint.sh`](https://github.com/djy-git/base_env/blob/main/context/bin/entrypoint.sh)
+#### 1.4.1 [`context/bin/entrypoint.sh`](https://github.com/djy-git/base/blob/main/context/bin/entrypoint.sh)
 `entrypoint` for Dockerfile
+
+### 1.5 `context/test`: Pytest scripts
+#### 1.5.1 [`context/test/caret.py`](https://github.com/djy-git/base/blob/main/context/test/caret.py)
+#### 1.5.2 [`context/test/tf_torch.py`](https://github.com/djy-git/base/blob/main/context/test/tf_torch.py)
 
 
 ## 2. Dockerfile
-### 2.1 `djyoon0223/base:basic`
-[`base.basic.Dockerfile`](https://github.com/djy-git/base_env/blob/main/base.basic.Dockerfile)
-
-### 2.2 `djyoon0223/base:caret`
-[`base.caret.Dockerfile`](https://github.com/djy-git/base_env/blob/main/base.caret.Dockerfile)
-
-### 2.3 `djyoon0223/base:tf_torch`
-[`base.tf_torch.Dockerfile`](https://github.com/djy-git/base_env/blob/main/base.tf_torch.Dockerfile)
-
-### 2.4 `djyoon0223/base:full`
-[`base.full.Dockerfile`](https://github.com/djy-git/base_env/blob/main/base.full.Dockerfile)
+### 2.1 [`djyoon0223/base:basic`](https://github.com/djy-git/base/blob/main/base.basic.Dockerfile)
+### 2.2 [`djyoon0223/base:caret`](https://github.com/djy-git/base/blob/main/base.caret.Dockerfile)
+### 2.3 [`djyoon0223/base:tf_torch`](https://github.com/djy-git/base/blob/main/base.tf_torch.Dockerfile)
+### 2.4 [`djyoon0223/base:full`](https://github.com/djy-git/base/blob/main/base.full.Dockerfile)

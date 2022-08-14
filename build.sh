@@ -1,6 +1,6 @@
 #!/bin/bash
 
-sudo docker build -t djyoon0223/base:basic -f base.basic.Dockerfile .
-sudo docker build -t djyoon0223/base:caret -f base.caret.Dockerfile .
-sudo docker build -t djyoon0223/base:tf_torch -f base.tf_torch.Dockerfile .
-sudo docker build -t djyoon0223/base:full -f base.full.Dockerfile .
+for tag in basic caret full tf_torch
+do
+  sudo docker build -t djyoon0223/base:$tag -f dockerfile/base.$tag.Dockerfile .
+done

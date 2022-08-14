@@ -31,38 +31,42 @@ RUN xargs apt-get install -y < /opt/docker/context/package/requirements_basic.ap
     rm -rf /var/lib/ap/lists/* && \
     pip install -r /opt/docker/context/package/requirements_basic.pip
 
-## create environment: caret (rapids + pycaret)
+## create environment: caret (cuml + pycaret)
 #RUN conda create -n caret -c rapidsai -c nvidia -c conda-forge cuml=0.19 python=3.8 cudatoolkit=11.2
 #SHELL ["conda", "run", "-n", "caret", "/bin/bash", "-c"]
 #RUN rm -r /opt/conda/envs/caret/lib/python3.8/site-packages/llvmlite*
-#RUN pip install pycaret[full]
+#RUN pip install pycaret[full]==2.3.10
 #RUN conda install ipykernel && \
 #    python -m ipykernel install --user --name caret --display-name "caret"
-#
-## create environment: tf_torch (rapids + tensorflow + torch)
-#RUN conda create -n tf_torch -c rapidsai -c nvidia -c pytorch -c conda-forge rapids=22.02 python=3.8 cudatoolkit=11.3 pytorch=1.12 torchvision=0.13 torchaudio=0.12
-#SHELL ["conda", "run", "-n", "tf_torch", "/bin/bash", "-c"]
-#RUN pip install tensorflow==2.9.1
-#RUN conda install -c nvidia cuda-python=11.7.0
-#RUN conda install ipykernel && \
-#    python -m ipykernel install --user --name tf_torch --display-name "tf_torch"
-#
-## install additional apt packages
-#COPY context/package/requirements_expansion.apt /opt/docker/context/package/requirements_expansion.apt
-#COPY context/package/requirements_expansion.pip /opt/docker/context/package/requirements_expansion.pip
-#RUN xargs apt-get install -y < /opt/docker/context/package/requirements_expansion.apt && \
-#    apt-get clean && \
-#    rm -rf /var/lib/ap/lists/*
-#
+#COPY context/test/caret.py /opt/docker/context/test/caret.py
+#RUN pytest /opt/docker/context/test/caret.py
+
+# create environment: tf_torch (rapids + tensorflow + torch)
+RUN conda create -n tf_torch -c rapidsai -c nvidia -c pytorch -c conda-forge rapids=22.02 python=3.8 cudatoolkit=11.3 pytorch=1.12 torchvision=0.13 torchaudio=0.12
+SHELL ["conda", "run", "-n", "tf_torch", "/bin/bash", "-c"]
+RUN pip install tensorflow==2.9.1
+RUN conda install -c nvidia cuda-python=11.7.0
+RUN conda install ipykernel && \
+    python -m ipykernel install --user --name tf_torch --display-name "tf_torch"
+COPY context/test/tf_torch.py /opt/docker/context/test/tf_torch.py
+RUN pytest /opt/docker/context/test/tf_torch.py
+
+# install additional apt packages
+COPY context/package/requirements_expansion.apt /opt/docker/context/package/requirements_expansion.apt
+COPY context/package/requirements_expansion.pip /opt/docker/context/package/requirements_expansion.pip
+RUN xargs apt-get install -y < /opt/docker/context/package/requirements_expansion.apt && \
+    apt-get clean && \
+    rm -rf /var/lib/ap/lists/*
+
 ## install additional pip packages for environment caret
 #SHELL ["conda", "run", "-n", "caret", "/bin/bash", "-c"]
 #RUN pip install -r /opt/docker/context/package/requirements_basic.pip && \
 #    pip install -r /opt/docker/context/package/requirements_expansion.pip
-#
-## install additional pip packages for environment tf_torch
-#SHELL ["conda", "run", "-n", "tf_torch", "/bin/bash", "-c"]
-#RUN pip install -r /opt/docker/context/package/requirements_basic.pip && \
-#    pip install -r /opt/docker/context/package/requirements_expansion.pip
+
+# install additional pip packages for environment tf_torch
+SHELL ["conda", "run", "-n", "tf_torch", "/bin/bash", "-c"]
+RUN pip install -r /opt/docker/context/package/requirements_basic.pip && \
+    pip install -r /opt/docker/context/package/requirements_expansion.pip
 
 # copy context directory
 COPY context /opt/docker/context
