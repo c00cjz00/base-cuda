@@ -11,7 +11,7 @@ $ docker pull djyoon0223/base:full
 
 # Ⅰ. Base Image
 [`nvidia/cuda:11.3.0-cudnn8-devel-ubuntu20.04`](https://hub.docker.com/r/nvidia/cuda/tags)
-3
+
 
 # Ⅱ. Tag
 1. `djyoon0223/base:basic`
