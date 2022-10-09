@@ -54,7 +54,9 @@ djyoon0223/base:full
 
 ## 2. `docker-compose`
 [`docker-compose.yaml`](https://github.com/djy-git/base/blob/main/docker-compose.yaml)
-`$ sudo docker-compose up -d`
+```
+$ sudo docker-compose up -d
+```
 
 
 ---
