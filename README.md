@@ -28,7 +28,7 @@ $ docker pull djyoon0223/base:full
 # Ⅲ. Usage
 ## 1. [`docker run`](https://github.com/djy-git/base/blob/main/docker-run.sh)
 ```
-sudo docker run \
+$ sudo docker run \
 --name compute_server \
 --hostname base \
 --gpus '"device=0"' \ 
