@@ -54,40 +54,6 @@ djyoon0223/base:full
 
 ## 2. `docker-compose`
 [`docker-compose.yaml`](https://github.com/djy-git/base/blob/main/docker-compose.yaml)
-```
-version: "3.8"
-services:
-  compute_server:
-    image: djyoon0223/base:full
-    ports:
-      - 10022:22
-      - 13306:3306
-      - 15000:5000
-      - 15006:5006
-      - 16000:6000
-      - 16006:6006
-      - 17860:7860
-      - 18000:8000
-      - 18786:8786
-      - 18787:8787
-      - 18888:8888
-      - 18889:8889
-    volumes:
-      - /root/project:/root/project
-    hostname: "base"
-    restart: always
-    tty: true
-    ipc: host
-    privileged: true
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              device_ids: ['0']
-              capabilities: [gpu]
-```
-
 `$ sudo docker-compose up -d`
 
 
