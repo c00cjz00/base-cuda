@@ -52,8 +52,7 @@ sudo docker run \
 djyoon0223/base:full
 ```
 
-## 2. `docker-compose`
-[`docker-compose.yaml`](https://github.com/djy-git/base/blob/main/docker-compose.yaml)
+## 2. [`docker-compose`](https://github.com/djy-git/base/blob/main/docker-compose.yaml)
 ```
 $ sudo docker-compose up -d
 ```
