@@ -26,16 +26,17 @@ $ docker pull djyoon0223/base:full
 
 
 # Ⅲ. Usage
-## 1. [`docker run`](https://github.com/djy-git/base/blob/main/docker-run.sh)
+## 1. [`docker run`](https://github.com/djy-git/base/blob/main/run.sh)
 ```
 $ sudo docker run \
---name compute_server \
---hostname base \
---gpus '"device=0"' \ 
+--name "compute-server" \
+--hostname "3090" \
+--gpus '"device=0"' \
 --ipc host \
 --restart always \
 --privileged \
--v /root/project:/root/project \
+-v /workspace/shared:/workspace \
+-v /workspace2/shared:/workspace2 \
 -p 10022:22 \
 -p 13306:3306 \
 -p 15000:5000 \
@@ -44,10 +45,12 @@ $ sudo docker run \
 -p 16006:6006 \
 -p 17860:7860 \
 -p 18000:8000 \
+-p 18384:8384 \
 -p 18786:8786 \
 -p 18787:8787 \
 -p 18888:8888 \
--p 18889:8889 \
+-p 22000:22000 \
+-p 10000-10010:10000-10010 \
 -itd \
 djyoon0223/base:full
 ```
@@ -63,15 +66,16 @@ $ sudo docker-compose up -d
 
 # Ⅳ. Building Image
 ## 1. `context`: Commonly used files for building images
-### 1.1 `context/setting`: `bashrc`, `account`, `vimrc` Settings
-#### 1.1.1 [`context/setting/bashrc`](https://github.com/djy-git/base/blob/main/context/setting/bashrc)
+### 1.1 `context/config`: `bashrc`, `account`, `vimrc` Settings
+#### 1.1.1 [`context/config/bashrc`](https://github.com/djy-git/base/blob/main/context/config/bashrc)
 Additional `bash` setting
 
-#### 1.1.2 [`context/setting/account`](https://github.com/djy-git/base/blob/main/context/setting/account)
+#### 1.1.2 [`context/config/account`](https://github.com/djy-git/base/blob/main/context/config/account)
 `USER:PASSWORD`
 
-#### 1.1.3 [`context/setting/vimrc`](https://github.com/djy-git/base/blob/main/context/setting/vimrc)
+#### 1.1.3 [`context/config/vimrc`](https://github.com/djy-git/base/blob/main/context/config/vimrc)
 Additional `vim` setting
+
 
 ### 1.2 `context/package`: `apt`, `pip` packages
 #### 1.2.1 [`context/package/requirements_basic.apt`](https://github.com/djy-git/base/blob/main/context/package/requirements_basic.apt)
@@ -86,17 +90,22 @@ Basic `pip` packages
 #### 1.2.4 [`context/package/requirements_expansion.pip`](https://github.com/djy-git/base/blob/main/context/package/requirements_expansion.pip)
 Expansion `pip` packages
 
+#### 1.2.5 [`context/package/install_syncthing.sh`](https://github.com/djy-git/base/blob/main/context/package/install_syncthing.sh)
+Install `syncthing` package
 
-### 1.3 `context/jupyter`: `jupyter` settings
-#### 1.3.1 [`context/jupyter/jupyter_notebook_config.py`](https://github.com/djy-git/base/blob/main/context/jupyter/jupyter_notebook_config.py)
+
+### 1.3 `context/package/jupyter`: `jupyter` package
+#### 1.3.1 [`context/package/jupyter/jupyter_notebook_config.py`](https://github.com/djy-git/base/blob/main/context/jupyter/jupyter_notebook_config.py)
 `jupyter` setting
 
-#### 1.3.2 [`context/jupyter/jupytertheme.sh`](https://github.com/djy-git/base/blob/main/context/jupyter/jupytertheme.sh)
+#### 1.3.2 [`context/package/jupyter/jupytertheme.sh`](https://github.com/djy-git/base/blob/main/context/jupyter/jupytertheme.sh)
 Apply `jupyter` theme (Reset `jupyter` theme: `$ jt -r`)
 
-### 1.4 `context/bin`: Shell scripts
-#### 1.4.1 [`context/bin/entrypoint.sh`](https://github.com/djy-git/base/blob/main/context/bin/entrypoint.sh)
+
+### 1.4 `context/entrypoint`: Shell scripts
+#### 1.4.1 [`context/entrypoint/entrypoint.sh`](https://github.com/djy-git/base/blob/main/context/bin/entrypoint.sh)
 `entrypoint` for Dockerfile
+
 
 ### 1.5 `context/test`: Pytest scripts
 #### 1.5.1 [`context/test/caret.py`](https://github.com/djy-git/base/blob/main/context/test/caret.py)
