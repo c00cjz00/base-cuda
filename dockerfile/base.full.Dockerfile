@@ -47,10 +47,13 @@ RUN conda install -c nvidia cuda-python=11.7.0
 RUN conda install ipykernel && \
     python -m ipykernel install --user --name tf_torch --display-name "tf_torch"
 
+# copy context directory
+COPY context /opt/docker/context
+RUN chmod 755 $(find /opt/docker/context -type f)
+
 # install additional apt packages
-COPY context/package/requirements_expansion.apt /opt/docker/context/package/requirements_expansion.apt
-COPY context/package/requirements_expansion.pip /opt/docker/context/package/requirements_expansion.pip
 RUN xargs apt-get install -y < /opt/docker/context/package/requirements_expansion.apt && \
+    /opt/docker/context/package/install_syncthing.sh && \
     apt-get clean && \
     rm -rf /var/lib/ap/lists/*
 
@@ -64,21 +67,12 @@ SHELL ["conda", "run", "-n", "tf_torch", "/bin/bash", "-c"]
 RUN pip install -r /opt/docker/context/package/requirements_basic.pip && \
     pip install -r /opt/docker/context/package/requirements_expansion.pip
 
-# copy context directory
-COPY context /opt/docker/context
+# common configuration
+RUN /opt/docker/context/config/apply_config.sh
 
-# account, bashrc, vim setting
-RUN cat /opt/docker/context/setting/account | chpasswd && \
-    cat /opt/docker/context/setting/bashrc >> /root/.bashrc && \
-    cat /opt/docker/context/setting/vimrc >> /usr/share/vim/vimrc && \
-    echo "PermitRootLogin yes" >> /etc/ssh/sshd_config && \
-    mkdir -p /run/sshd
-
-# jupyter setting
-RUN jupyter notebook --generate-config && \
-    cat /opt/docker/context/jupyter/jupyter_notebook_config.py >> /root/.jupyter/jupyter_notebook_config.py
+# package configuration
+RUN /opt/docker/context/package/jupyter/generate_config.sh
 
 # run entrypoint.sh
-RUN chmod +x /opt/docker/context/bin/entrypoint.sh
-ENTRYPOINT [ "/opt/docker/context/bin/entrypoint.sh" ]
+ENTRYPOINT [ "/opt/docker/context/entrypoint/entrypoint.sh" ]
 CMD [ "/bin/bash" ]
