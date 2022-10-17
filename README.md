@@ -98,15 +98,15 @@ Install `syncthing` package
 
 
 ### 1.3 `context/package/jupyter`: `jupyter` package
-#### 1.3.1 [`context/package/jupyter/jupyter_notebook_config.py`](https://github.com/djy-git/base/blob/main/context/jupyter/jupyter_notebook_config.py)
+#### 1.3.1 [`context/package/jupyter/jupyter_notebook_config.py`](https://github.com/djy-git/base/blob/main/context/package/jupyter/jupyter_notebook_config.py)
 `jupyter` setting
 
-#### 1.3.2 [`context/package/jupyter/jupytertheme.sh`](https://github.com/djy-git/base/blob/main/context/jupyter/jupytertheme.sh)
+#### 1.3.2 [`context/package/jupyter/jupytertheme.sh`](https://github.com/djy-git/base/blob/main/context/package/jupyter/jupytertheme.sh)
 Apply `jupyter` theme (Reset `jupyter` theme: `$ jt -r`)
 
 
 ### 1.4 `context/entrypoint`: Shell scripts
-#### 1.4.1 [`context/entrypoint/entrypoint.sh`](https://github.com/djy-git/base/blob/main/context/bin/entrypoint.sh)
+#### 1.4.1 [`context/entrypoint/entrypoint.sh`](https://github.com/djy-git/base/blob/main/context/entrypoint/entrypoint.sh)
 `entrypoint` for Dockerfile
 
 
@@ -116,7 +116,7 @@ Apply `jupyter` theme (Reset `jupyter` theme: `$ jt -r`)
 
 
 ## 2. Dockerfile
-### 2.1 [`djyoon0223/base:basic`](https://github.com/djy-git/base/blob/main/base.basic.Dockerfile)
-### 2.2 [`djyoon0223/base:caret`](https://github.com/djy-git/base/blob/main/base.caret.Dockerfile)
-### 2.3 [`djyoon0223/base:tf_torch`](https://github.com/djy-git/base/blob/main/base.tf_torch.Dockerfile)
-### 2.4 [`djyoon0223/base:full`](https://github.com/djy-git/base/blob/main/base.full.Dockerfile)
+### 2.1 [`djyoon0223/base:basic`](https://github.com/djy-git/base/blob/main/dockerfile/base.basic.Dockerfile)
+### 2.2 [`djyoon0223/base:caret`](https://github.com/djy-git/base/blob/main/dockerfile/base.caret.Dockerfile)
+### 2.3 [`djyoon0223/base:tf_torch`](https://github.com/djy-git/base/blob/main/dockerfile/base.tf_torch.Dockerfile)
+### 2.4 [`djyoon0223/base:full`](https://github.com/djy-git/base/blob/main/dockerfile/base.full.Dockerfile)
