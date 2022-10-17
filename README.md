@@ -76,6 +76,9 @@ Additional `bash` setting
 #### 1.1.3 [`context/config/vimrc`](https://github.com/djy-git/base/blob/main/context/config/vimrc)
 Additional `vim` setting
 
+#### 1.1.4 [`context/config/apply_config.sh`](https://github.com/djy-git/base/blob/main/context/config/apply_config.sh)
+Apply config settings
+
 
 ### 1.2 `context/package`: `apt`, `pip` packages
 #### 1.2.1 [`context/package/requirements_basic.apt`](https://github.com/djy-git/base/blob/main/context/package/requirements_basic.apt)
