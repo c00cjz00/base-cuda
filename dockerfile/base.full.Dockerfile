@@ -53,25 +53,14 @@ RUN chmod 755 $(find /opt/docker/context -type f)
 
 # install additional apt packages
 RUN xargs apt-get install -y < /opt/docker/context/package/requirements_expansion.apt && \
-    /opt/docker/context/package/install_syncthing.sh && \
     apt-get clean && \
     rm -rf /var/lib/ap/lists/*
 
-# install additional pip packages for environment caret
-SHELL ["conda", "run", "-n", "caret", "/bin/bash", "-c"]
-RUN pip install -r /opt/docker/context/package/requirements_basic.pip && \
-    pip install -r /opt/docker/context/package/requirements_expansion.pip
-
-# install additional pip packages for environment tf_torch
-SHELL ["conda", "run", "-n", "tf_torch", "/bin/bash", "-c"]
-RUN pip install -r /opt/docker/context/package/requirements_basic.pip && \
-    pip install -r /opt/docker/context/package/requirements_expansion.pip
+# install additional packages, pip packages for environments
+RUN /opt/docker/context/package/install_all.sh caret tf_torch
 
 # common configuration
-RUN /opt/docker/context/config/apply_config.sh
-
-# package configuration
-RUN /opt/docker/context/package/jupyter/generate_config.sh
+RUN /opt/docker/context/config/apply.sh
 
 # run entrypoint.sh
 ENTRYPOINT [ "/opt/docker/context/entrypoint/entrypoint.sh" ]
