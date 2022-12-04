@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source /root/.bashrc
+source ~/.bashrc
 
 # Start ssh
 service ssh start

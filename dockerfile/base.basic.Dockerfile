@@ -26,9 +26,8 @@ RUN chmod +x /usr/bin/tini
 # install basic packages
 COPY context/package/requirements_basic.apt /opt/docker/context/package/requirements_basic.apt
 COPY context/package/requirements_basic.pip /opt/docker/context/package/requirements_basic.pip
-RUN xargs apt-get install -y < /opt/docker/context/package/requirements_basic.apt && \
-    apt-get clean && \
-    rm -rf /var/lib/ap/lists/* && \
+RUN apt-get update && \
+    xargs apt-get install -y < /opt/docker/context/package/requirements_basic.apt && \
     pip install -r /opt/docker/context/package/requirements_basic.pip
 
 ## create environment: caret (cuml + pycaret)
@@ -38,7 +37,7 @@ RUN xargs apt-get install -y < /opt/docker/context/package/requirements_basic.ap
 #RUN pip install pycaret[full]==2.3.10
 #RUN conda install ipykernel && \
 #    python -m ipykernel install --user --name caret --display-name "caret"
-
+#
 ## create environment: tf_torch (rapids + tensorflow + torch)
 #RUN conda create -n tf_torch -c rapidsai -c nvidia -c pytorch -c conda-forge rapids=22.02 python=3.8 cudatoolkit=11.3 pytorch=1.12 torchvision=0.13 torchaudio=0.12
 #SHELL ["conda", "run", "-n", "tf_torch", "/bin/bash", "-c"]
@@ -51,16 +50,26 @@ RUN xargs apt-get install -y < /opt/docker/context/package/requirements_basic.ap
 COPY context /opt/docker/context
 RUN chmod 755 $(find /opt/docker/context -type f)
 
-# install additional apt packages
-RUN xargs apt-get install -y < /opt/docker/context/package/requirements_expansion.apt && \
-    apt-get clean && \
-    rm -rf /var/lib/ap/lists/*
+## install additional apt packages
+#RUN apt-get update && \
+#    xargs apt-get install -y < /opt/docker/context/package/requirements_expansion.apt
 
-# install additional packages, pip packages for environments
-RUN /opt/docker/context/package/install_all.sh
+## install third party packages
+#RUN /opt/docker/context/package/thirdparty/install_syncthing.sh && \
+#    /opt/docker/context/package/thirdparty/install_nanum.sh
+
+# install pip packages for environments
+RUN /opt/docker/context/package/install_pip.sh
 
 # common configuration
 RUN /opt/docker/context/config/apply.sh
+
+# remove apt cache
+RUN rm -rf /var/lib/apt/lists/*
+
+# configure jupyter
+RUN jupyter notebook --generate-config && \
+    cat /opt/docker/context/package/jupyter/jupyter_notebook_config.py >> ~/.jupyter/jupyter_notebook_config.py
 
 # run entrypoint.sh
 ENTRYPOINT [ "/opt/docker/context/entrypoint/entrypoint.sh" ]
