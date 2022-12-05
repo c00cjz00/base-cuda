@@ -30,13 +30,13 @@ RUN apt-get update && \
     xargs apt-get install -y < /opt/docker/context/package/requirements_basic.apt && \
     pip install -r /opt/docker/context/package/requirements_basic.pip
 
-# create environment: caret (cuml + pycaret)
-RUN conda create -n caret -c rapidsai -c nvidia -c conda-forge cuml=0.19 python=3.8 cudatoolkit=11.2
-SHELL ["conda", "run", "-n", "caret", "/bin/bash", "-c"]
-RUN rm -r /opt/conda/envs/caret/lib/python3.8/site-packages/llvmlite*
+# create environment: pycaret (cuml + pycaret)
+RUN conda create -n pycaret -c rapidsai -c nvidia -c conda-forge cuml=0.19 python=3.8 cudatoolkit=11.2
+SHELL ["conda", "run", "-n", "pycaret", "/bin/bash", "-c"]
+RUN rm -r /opt/conda/envs/pycaret/lib/python3.8/site-packages/llvmlite*
 RUN pip install pycaret[full]==2.3.10
 RUN conda install ipykernel && \
-    python -m ipykernel install --user --name caret --display-name "caret"
+    python -m ipykernel install --user --name pycaret --display-name "pycaret"
 
 # create environment: tf_torch (rapids + tensorflow + torch)
 RUN conda create -n tf_torch -c rapidsai -c nvidia -c pytorch -c conda-forge rapids=22.02 python=3.8 cudatoolkit=11.3 pytorch=1.12 torchvision=0.13 torchaudio=0.12
@@ -56,10 +56,10 @@ RUN apt-get update && \
 
 # install third party packages
 RUN /opt/docker/context/package/thirdparty/install_syncthing.sh && \
-    /opt/docker/context/package/thirdparty/install_nanum.sh caret tf_torch
+    /opt/docker/context/package/thirdparty/install_nanum.sh pycaret tf_torch
 
 # install pip packages for environments
-RUN /opt/docker/context/package/install_pip.sh caret tf_torch
+RUN /opt/docker/context/package/install_pip.sh pycaret tf_torch
 
 # common configuration
 RUN /opt/docker/context/config/apply.sh

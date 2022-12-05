@@ -3,7 +3,7 @@
 - **DockerHub**: [djyoon0223/base](https://hub.docker.com/repository/docker/djyoon0223/base)
 ```
 $ docker pull djyoon0223/base:basic
-$ docker pull djyoon0223/base:caret
+$ docker pull djyoon0223/base:pycaret
 $ docker pull djyoon0223/base:tf_torch
 $ docker pull djyoon0223/base:full
 ```
@@ -16,12 +16,12 @@ $ docker pull djyoon0223/base:full
 # Ⅱ. Tag
 1. `djyoon0223/base:basic`
    - `base`: `jupyter`
-2. `djyoon0223/base:caret`
-   - `caret`: `jupyter` + `rapids(cuml)=0.19` + `pycaret[full]=2.3.10` + `cudatoolkit=11.2`
+2. `djyoon0223/base:pycaret`
+   - `pycaret`: `jupyter` + `rapids(cuml)=0.19` + `pycaret[full]=2.3.10` + `cudatoolkit=11.2`
 3. `djyoon0223/base:tf_torch`
    - `tf_torch`: `jupyter` + `rapids=22.02` + `tensorflow=2.9.1` + `torch=1.12` + `torchvision=0.13` + `torchaudio=0.12` + `cudatoolkit=11.3`
 4. `djyoon0223/base:full`
-   - `caret`: `djyoon0223/base:caret`
+   - `pycaret`: `djyoon0223/base:pycaret`
    - `tf_torch`: `djyoon0223/base:tf_torch`
 
 
@@ -111,12 +111,12 @@ Apply `jupyter` theme (Reset `jupyter` theme: `$ jt -r`)
 
 
 ### 1.5 `context/test`: Pytest scripts
-#### 1.5.1 [`context/test/caret.py`](https://github.com/djy-git/base/blob/main/context/test/caret.py)
+#### 1.5.1 [`context/test/pycaret.py`](https://github.com/djy-git/base/blob/main/context/test/pycaret.py)
 #### 1.5.2 [`context/test/tf_torch.py`](https://github.com/djy-git/base/blob/main/context/test/tf_torch.py)
 
 
 ## 2. Dockerfile
 ### 2.1 [`djyoon0223/base:basic`](https://github.com/djy-git/base/blob/main/dockerfile/base.basic.Dockerfile)
-### 2.2 [`djyoon0223/base:caret`](https://github.com/djy-git/base/blob/main/dockerfile/base.caret.Dockerfile)
+### 2.2 [`djyoon0223/base:pycaret`](https://github.com/djy-git/base/blob/main/dockerfile/base.pycaret.Dockerfile)
 ### 2.3 [`djyoon0223/base:tf_torch`](https://github.com/djy-git/base/blob/main/dockerfile/base.tf_torch.Dockerfile)
 ### 2.4 [`djyoon0223/base:full`](https://github.com/djy-git/base/blob/main/dockerfile/base.full.Dockerfile)
