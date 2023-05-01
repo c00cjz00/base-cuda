@@ -37,29 +37,29 @@ RUN apt-get update && \
 #RUN pip install pycaret[full]==2.3.10
 #RUN conda install ipykernel && \
 #    python -m ipykernel install --user --name pycaret --display-name "pycaret"
-
-# create environment: tf_torch (rapids + tensorflow + torch)
-RUN conda create -n tf_torch -c rapidsai -c nvidia -c pytorch -c conda-forge rapids=22.02 python=3.8 cudatoolkit=11.3 pytorch=1.12 torchvision=0.13 torchaudio=0.12
-SHELL ["conda", "run", "-n", "tf_torch", "/bin/bash", "-c"]
-RUN pip install tensorflow==2.9.1
-RUN conda install -c nvidia cuda-python=11.7.0
-RUN conda install ipykernel && \
-    python -m ipykernel install --user --name tf_torch --display-name "tf_torch"
+#
+## create environment: tf_torch (rapids + tensorflow + torch)
+#RUN conda create -n tf_torch -c rapidsai -c nvidia -c pytorch -c conda-forge rapids=22.02 python=3.8 cudatoolkit=11.3 pytorch=1.12 torchvision=0.13 torchaudio=0.12
+#SHELL ["conda", "run", "-n", "tf_torch", "/bin/bash", "-c"]
+#RUN pip install tensorflow==2.9.1
+#RUN conda install -c nvidia cuda-python=11.7.0
+#RUN conda install ipykernel && \
+#    python -m ipykernel install --user --name tf_torch --display-name "tf_torch"
 
 # copy context directory
 COPY context /opt/docker/context
 RUN chmod 755 $(find /opt/docker/context -type f)
 
-# install additional apt packages
-RUN apt-get update && \
-    xargs apt-get install -y < /opt/docker/context/package/requirements_expansion.apt
+## install additional apt packages
+#RUN apt-get update && \
+#    xargs apt-get install -y < /opt/docker/context/package/requirements_expansion.apt
 
-# install third party packages
-RUN /opt/docker/context/package/other/install_syncthing.sh && \
-    /opt/docker/context/package/other/install_nanum.sh tf_torch
+## install third party packages
+#RUN /opt/docker/context/package/other/install_syncthing.sh && \
+#    /opt/docker/context/package/other/install_nanum.sh
 
 # install pip packages for environments
-RUN /opt/docker/context/package/install_pip.sh tf_torch
+RUN /opt/docker/context/package/install_pip.sh
 
 # common configuration
 RUN /opt/docker/context/config/apply.sh

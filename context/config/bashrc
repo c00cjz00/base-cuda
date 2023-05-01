@@ -1,8 +1,8 @@
 
-### custom configurations
+## custom configurations
 # env
 export LS_COLORS='di=00;36:fi=00;37'
-export PATH=$PATH:.
+export PATH=$HOME/.local/bin:.:$PATH
 
 # alias
 alias vb='vi ~/.bashrc'
