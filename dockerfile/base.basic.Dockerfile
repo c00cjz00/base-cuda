@@ -41,9 +41,9 @@ RUN pyenv virtualenv 3.8.16 base && \
 #    pip install cudf-cu11 cuml-cu11 --extra-index-url=https://pypi.nvidia.com && \
 #    pip install pycaret
 
-## install extension packages
-#COPY context/extension /opt/docker/context/extension
-#RUN pyenv activate base  && . /opt/docker/context/extension/install.sh
+# install extension packages
+COPY context/extension /opt/docker/context/extension
+RUN pyenv activate base  && . /opt/docker/context/extension/install.sh
 #RUN pyenv activate torch && . /opt/docker/context/extension/install.sh
 #RUN pyenv activate ml    && . /opt/docker/context/extension/install.sh
 
