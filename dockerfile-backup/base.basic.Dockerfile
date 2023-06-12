@@ -55,8 +55,8 @@ RUN chmod 755 $(find /opt/docker/context -type f)
 #    xargs apt-get install -y < /opt/docker/context/package/requirements_expansion.apt
 
 ## install third party packages
-#RUN /opt/docker/context/package/other/install_syncthing.sh && \
-#    /opt/docker/context/package/other/install_nanum.sh
+#RUN /opt/docker/context/package/extension/install_syncthing.sh && \
+#    /opt/docker/context/package/extension/install_nanum.sh
 
 # install pip packages for environments
 RUN /opt/docker/context/package/install_pip.sh

@@ -34,12 +34,12 @@ RUN pyenv virtualenv 3.8.16 torch && \
     pyenv activate torch && \
     pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
 
-# create environment: ml(rapids + pycaret)
-RUN pyenv virtualenv 3.8.16 ml && \
-    pyenv activate ml && \
-    pip install pip==21.3.1 && \
-    pip install cudf-cu11 cuml-cu11 --extra-index-url=https://pypi.nvidia.com && \
-    pip install pycaret
+## create environment: ml(rapids + pycaret)
+#RUN pyenv virtualenv 3.8.16 ml && \
+#    pyenv activate ml && \
+#    pip install pip==21.3.1 && \
+#    pip install cudf-cu11 cuml-cu11 --extra-index-url=https://pypi.nvidia.com && \
+#    pip install pycaret
 
 ## install extension packages
 #COPY context/extension /opt/docker/context/extension

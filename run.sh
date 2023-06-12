@@ -1,7 +1,7 @@
 #!/bin/bash
 
 sudo docker run \
---name "tmp" \
+--name "dev" \
 --hostname "3080" \
 --gpus '"device=0"' \
 --ipc host \
@@ -9,4 +9,4 @@ sudo docker run \
 --privileged \
 -v /mnt:/mnt \
 -itd \
-basic
+djyoon0223/base:full

@@ -55,8 +55,8 @@ RUN apt-get update && \
     xargs apt-get install -y < /opt/docker/context/package/requirements_expansion.apt
 
 # install third party packages
-RUN /opt/docker/context/package/other/install_syncthing.sh && \
-    /opt/docker/context/package/other/install_nanum.sh pycaret tf_torch
+RUN /opt/docker/context/package/extension/install_syncthing.sh && \
+    /opt/docker/context/package/extension/install_nanum.sh pycaret tf_torch
 
 # install pip packages for environments
 RUN /opt/docker/context/package/install_pip.sh pycaret tf_torch

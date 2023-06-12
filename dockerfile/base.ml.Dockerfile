@@ -29,10 +29,10 @@ RUN pyenv virtualenv 3.8.16 base && \
     pyenv activate base && \
     . /opt/docker/context/package/install_jupyter.sh
 
-# create environment: torch
-RUN pyenv virtualenv 3.8.16 torch && \
-    pyenv activate torch && \
-    pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
+## create environment: torch
+#RUN pyenv virtualenv 3.8.16 torch && \
+#    pyenv activate torch && \
+#    pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
 
 # create environment: ml(rapids + pycaret)
 RUN pyenv virtualenv 3.8.16 ml && \
