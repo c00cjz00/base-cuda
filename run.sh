@@ -1,12 +1,12 @@
 #!/bin/bash
 
 sudo docker run \
---name "dev" \
---hostname "3080" \
+--name "compute_server" \
+--hostname "dev" \
 --gpus '"device=0"' \
 --ipc host \
 --restart always \
 --privileged \
--v /mnt:/mnt \
+-v /root/project:/root/project \
 -itd \
 djyoon0223/base:full
