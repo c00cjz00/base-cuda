@@ -18,7 +18,7 @@ services:
       - 22000:22000
       - 10000-10010:10000-10010
     volumes:
-      - /root/project:/root/project
+      - /root/project:/workspace/project
     hostname: "dev"
     restart: always
     tty: true
