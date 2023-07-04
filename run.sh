@@ -7,7 +7,7 @@ sudo docker run \
 --ipc host \
 --restart always \
 --privileged \
--v /root/project:/root/project \
+-v /root/project:/workspace/project \
 -p 10022:22 \
 -p 13306:3306 \
 -p 15000:5000 \
@@ -22,4 +22,4 @@ sudo docker run \
 -p 18888:8888 \
 -p 18889:8889 \
 -itd \
-djyoon0223/base:basic
+alchemine/base:basic-11.8.0-cudnn8-runtime-ubuntu22.04

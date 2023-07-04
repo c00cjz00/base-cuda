@@ -1,6 +1,9 @@
 #!/bin/bash
 
-for tag in basic torch ml full
+BASE_TAG="11.8.0-cudnn8-runtime-ubuntu22.04"
+
+for id in basic # torch ml full
 do
-  sudo docker build -t djyoon0223/base:$tag -f dockerfile/base.$tag.Dockerfile .
+  tag=$id-$BASE_TAG
+  sudo docker build -t alchemine/base:$tag -f dockerfile/base.$id.Dockerfile .
 done
