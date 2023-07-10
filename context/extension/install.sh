@@ -1,10 +1,9 @@
 #!/bin/bash
 
 CONTEXT=/opt/docker/context
-VIRTUALENV=$(pyenv version | awk '{print $1}')
 
 # apt package
 xargs apt install -y < $CONTEXT/extension/requirements.apt
 
-# python package
+# pypi package
 pip install -r $CONTEXT/extension/requirements.pip

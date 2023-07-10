@@ -11,16 +11,16 @@ $ docker pull alchemine/base-cuda:11.8.0-cudnn8-runtime-ubuntu22.04
 
 
 # 2. Installed Packages
-1. Python3.10.6
+1. Python 3.10.6
 2. apt packages
    - [context/package/requirements.apt](https://github.com/alchemine/base-cuda/blob/11.8.0-cudnn8-runtime-ubuntu22.04/context/package/requirements.apt)
    - [context/extension/requirements.apt](https://github.com/alchemine/base-cuda/blob/11.8.0-cudnn8-runtime-ubuntu22.04/context/extension/requirements.apt)
-3. Pyenv(virtualenv)
-   - [context/package/install_pyenv.sh](https://github.com/alchemine/base-cuda/blob/11.8.0-cudnn8-runtime-ubuntu22.04/context/package/install_pyenv.sh)
-4. Poetry
-   - [context/package/install_poetry.sh](https://github.com/alchemine/base-cuda/blob/11.8.0-cudnn8-runtime-ubuntu22.04/context/package/install_poetry.sh) 
-5. Jupyter
+3. Jupyter
    - [context/package/install_jupyter.sh](https://github.com/alchemine/base-cuda/blob/11.8.0-cudnn8-runtime-ubuntu22.04/context/package/install_jupyter.sh)
+4. Pyenv(virtualenv)
+   - [context/package/install_pyenv.sh](https://github.com/alchemine/base-cuda/blob/11.8.0-cudnn8-runtime-ubuntu22.04/context/package/install_pyenv.sh)
+5. Poetry
+   - [context/package/install_poetry.sh](https://github.com/alchemine/base-cuda/blob/11.8.0-cudnn8-runtime-ubuntu22.04/context/package/install_poetry.sh) 
 6. PyPI packages
    - [context/extension/requirements.pip](https://github.com/alchemine/base-cuda/blob/11.8.0-cudnn8-runtime-ubuntu22.04/context/extension/requirements.pip)
 

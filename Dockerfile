@@ -18,7 +18,6 @@ COPY context/test       /opt/docker/context/test
 
 # apply fundamental configuration
 RUN /opt/docker/context/package/install.sh && \
-    /opt/docker/context/package/install_jupyter.sh && \
     cat /opt/docker/context/config/account | chpasswd && \
     cat /opt/docker/context/config/sshd_config >> /etc/ssh/sshd_config && \
     cat /opt/docker/context/config/bashrc >> /root/.bashrc && \
