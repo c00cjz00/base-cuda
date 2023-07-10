@@ -11,8 +11,7 @@ $ docker pull alchemine/base-cuda:11.8.0-cudnn8-runtime-ubuntu22.04
 
 
 # 2. Installed Packages
-1. Python3.8
-   - `PYTHONPATH`: `/root/.pyenv/versions/base/bin/python` 
+1. Python3.10.6
 2. apt packages
    - [context/package/requirements.apt](https://github.com/alchemine/base-cuda/blob/11.8.0-cudnn8-runtime-ubuntu22.04/context/package/requirements.apt)
    - [context/extension/requirements.apt](https://github.com/alchemine/base-cuda/blob/11.8.0-cudnn8-runtime-ubuntu22.04/context/extension/requirements.apt)
