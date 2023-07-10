@@ -8,6 +8,3 @@ xargs apt install -y < $CONTEXT/extension/requirements.apt
 
 # python package
 pip install -r $CONTEXT/extension/requirements.pip
-
-# add kernel
-python -m ipykernel install --user --name $VIRTUALENV --display-name $VIRTUALENV

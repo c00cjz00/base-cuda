@@ -22,4 +22,4 @@ sudo docker run \
 -p 18888:8888 \
 -p 18889:8889 \
 -itd \
-alchemine/base:basic-11.8.0-cudnn8-runtime-ubuntu22.04
+alchemine/base-cuda:11.8.0-cudnn8-runtime-ubuntu22.04

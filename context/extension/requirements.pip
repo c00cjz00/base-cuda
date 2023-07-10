@@ -1,3 +1,2 @@
-ipykernel
-pytest
-matplotlib
+ipykernel==6.24.0
+pytest==7.4.0

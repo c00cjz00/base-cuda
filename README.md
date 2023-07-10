@@ -1,8 +1,8 @@
 # Prepared CUDA based Image for Machine Learning Project
-- **GitHub**: [alchemine/base](https://github.com/alchemine/base)
-- **DockerHub**: [alchemine/base](https://hub.docker.com/repository/docker/alchemine/base)
+- **GitHub**: [alchemine/base-cuda](https://github.com/alchemine/base-cuda)
+- **DockerHub**: [alchemine/base-cuda](https://hub.docker.com/repository/docker/alchemine/base-cuda)
 ```
-$ docker pull alchemine/base:basic-11.8.0-cudnn8-runtime-ubuntu22.04
+$ docker pull alchemine/base-cuda:11.8.0-cudnn8-runtime-ubuntu22.04
 ```
 
 
@@ -10,16 +10,28 @@ $ docker pull alchemine/base:basic-11.8.0-cudnn8-runtime-ubuntu22.04
 [`nvidia/cuda:11.8.0-cudnn8-runtime-ubuntu22.04`](https://hub.docker.com/r/nvidia/cuda/tags)
 
 
-# 2. Tags
-1. `alchemine/base:basic`
-   - `pyenv activate base`: `jupyter`
+# 2. Installed Packages
+1. Python3.8
+   - `PYTHONPATH`: `/root/.pyenv/versions/base/bin/python` 
+2. apt packages
+   - [context/package/requirements.apt](https://github.com/alchemine/base-cuda/blob/11.8.0-cudnn8-runtime-ubuntu22.04/context/package/requirements.apt)
+   - [context/extension/requirements.apt](https://github.com/alchemine/base-cuda/blob/11.8.0-cudnn8-runtime-ubuntu22.04/context/extension/requirements.apt)
+3. Pyenv(virtualenv)
+   - [context/package/install_pyenv.sh](https://github.com/alchemine/base-cuda/blob/11.8.0-cudnn8-runtime-ubuntu22.04/context/package/install_pyenv.sh)
+4. Poetry
+   - [context/package/install_poetry.sh](https://github.com/alchemine/base-cuda/blob/11.8.0-cudnn8-runtime-ubuntu22.04/context/package/install_poetry.sh) 
+5. Jupyter
+   - [context/package/install_jupyter.sh](https://github.com/alchemine/base-cuda/blob/11.8.0-cudnn8-runtime-ubuntu22.04/context/package/install_jupyter.sh)
+6. PyPI packages
+   - [context/extension/requirements.pip](https://github.com/alchemine/base-cuda/blob/11.8.0-cudnn8-runtime-ubuntu22.04/context/extension/requirements.pip)
 
 
 # 3. Usage
-## 3.1 [`docker run`](https://github.com/alchemine/base/blob/nvidia/cuda/11.8.0-cudnn8-runtime-ubuntu22.04/run.sh)
+## 3.1 `docker run`
+- [run.sh](https://github.com/alchemine/base-cuda/blob/11.8.0-cudnn8-runtime-ubuntu22.04/run.sh)
 ```
 $ sudo docker run \
---name "compute-server" \
+--name "compute_server" \
 --hostname "dev" \
 --gpus '"device=0"' \
 --ipc host \
@@ -38,14 +50,17 @@ $ sudo docker run \
 -p 18786:8786 \
 -p 18787:8787 \
 -p 18888:8888 \
+-p 18889:8889 \
 -itd \
-alchemine/base:basic-11.8.0-cudnn8-runtime-ubuntu22.04
+alchemine/base-cuda:11.8.0-cudnn8-runtime-ubuntu22.04
 ```
 
-## 3.2 [`docker-compose`](https://github.com/alchemine/base/blob/nvidia/cuda/11.8.0-cudnn8-runtime-ubuntu22.04/docker-compose.yaml)
+## 3.2 `docker-compose`
+- [docker-compose.yaml](https://github.com/alchemine/base-cuda/blob/11.8.0-cudnn8-runtime-ubuntu22.04/docker-compose.yaml)
 ```
 $ sudo docker-compose up -d
 ```
 
+
 # 4. Dockerfile
-## 2.1 [`alchemine/base:basic`](https://github.com/alchemine/base/blob/nvidia/cuda/11.8.0-cudnn8-runtime-ubuntu22.04/dockerfile/base.basic.Dockerfile)
+- [Dockerfile](https://github.com/alchemine/base-cuda/blob/11.8.0-cudnn8-runtime-ubuntu22.04/Dockerfile)

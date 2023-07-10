@@ -6,7 +6,7 @@ source ~/.bashrc
 service ssh start
 
 # Start jupyter
-nohup ~/.pyenv/versions/base/bin/python -m jupyter notebook > /dev/null 2>&1 &
+nohup jupyter notebook > /dev/null 2>&1 &
 
 # Check if we should quote the exec params
 UNQUOTE=false
