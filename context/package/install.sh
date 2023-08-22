@@ -14,3 +14,6 @@ $CONTEXT/package/install_pyenv.sh
 
 # poetry
 $CONTEXT/package/install_poetry.sh
+
+# java
+$CONTEXT/package/install_java.sh
