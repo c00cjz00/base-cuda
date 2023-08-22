@@ -9,9 +9,6 @@ apt update && xargs apt install -y < $CONTEXT/package/requirements.apt
 ln -s /usr/bin/python3 /usr/bin/python
 apt install -y python3-pip
 
-# jupyter
-$CONTEXT/package/install_jupyter.sh
-
 # pyenv
 $CONTEXT/package/install_pyenv.sh
 

@@ -1,12 +1,7 @@
 #!/bin/bash
 
-source ~/.bashrc
-
 # Start ssh
 service ssh start
-
-# Start jupyter
-nohup jupyter notebook > /dev/null 2>&1 &
 
 # Check if we should quote the exec params
 UNQUOTE=false
