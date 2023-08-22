@@ -1,4 +1,5 @@
 version: "3.8"
+
 services:
   compute_server:
     image: alchemine/base-cuda:11.8.0-cudnn8-runtime-ubuntu22.04
@@ -14,10 +15,12 @@ services:
       - 18384:8384
       - 18786:8786
       - 18787:8787
+      - 18080:8080
       - 18888:8888
       - 18889:8889
     volumes:
-      - /root/project:/workspace/project
+      - /workspace:/workspace
+      - /data:/data
     hostname: "dev"
     restart: always
     tty: true

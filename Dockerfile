@@ -14,7 +14,6 @@ WORKDIR $HOME
 COPY context/config     /opt/docker/context/config
 COPY context/entrypoint /opt/docker/context/entrypoint
 COPY context/package    /opt/docker/context/package
-COPY context/test       /opt/docker/context/test
 
 # apply fundamental configuration
 RUN /opt/docker/context/package/install.sh && \
