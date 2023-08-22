@@ -1,5 +1,4 @@
 
-## custom configurations
 # env
 export PATH=.:$HOME/.local/bin:$PATH
 export LS_COLORS='di=00;36:fi=00;37'
