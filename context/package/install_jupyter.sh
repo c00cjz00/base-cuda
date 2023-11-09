@@ -3,7 +3,7 @@
 CONTEXT=/opt/docker/context
 
 # install jupyter
-pip install jupyter
+pip install jupyter notebook==6.4.4
 
 # jupyter configuration
 jupyter notebook --generate-config

@@ -3,11 +3,12 @@
 CONTEXT=/opt/docker/context
 
 # apt package
-apt update && xargs apt install -y < $CONTEXT/package/requirements.apt
+apt update && \
+xargs apt install -y < $CONTEXT/package/requirements.apt && \
+rm -rf /var/lib/apt/lists/*
 
-# python
-ln -s /usr/bin/python3 /usr/bin/python
-apt install -y python3-pip
+# python 3.8, 3.9, 3.10
+$CONTEXT/package/install_python.sh
 
 # pyenv
 $CONTEXT/package/install_pyenv.sh

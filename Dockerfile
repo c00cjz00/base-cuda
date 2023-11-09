@@ -26,9 +26,6 @@ RUN /opt/docker/context/package/install.sh && \
 COPY context/extension /opt/docker/context/extension
 RUN /opt/docker/context/extension/install.sh
 
-# clean
-RUN rm -rf /var/lib/apt/lists/*
-
 # run entrypoint.sh
 ENTRYPOINT [ "/opt/docker/context/entrypoint/entrypoint.sh" ]
 CMD [ "/bin/bash" ]

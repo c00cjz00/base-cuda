@@ -11,10 +11,6 @@ build-essential
 openssh-server
 vim
 git
-libssl-dev
-libffi-dev
-libsqlite3-dev
-libbz2-dev
 unzip
 htop
 net-tools

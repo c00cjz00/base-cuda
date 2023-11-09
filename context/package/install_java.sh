@@ -3,7 +3,9 @@
 CONTEXT=/opt/docker/context
 
 # install java
-apt update && apt install -y openjdk-8-jdk
+apt update && \
+apt install -y openjdk-8-jdk && \
+rm -rf /var/lib/apt/lists/*
 
 # add env
 echo "" >> ~/.bashrc
