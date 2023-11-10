@@ -14,3 +14,7 @@ git
 unzip
 htop
 net-tools
+libssl-dev
+libffi-dev
+libsqlite3-dev
+libbz2-dev
