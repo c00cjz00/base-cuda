@@ -7,8 +7,6 @@ ARG DEBIAN_FRONTEND=noninteractive
 
 # environment
 SHELL ["/bin/bash", "-ic"]
-ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
-WORKDIR $HOME
 
 # copy context
 COPY context/config     /opt/docker/context/config
