@@ -5,9 +5,6 @@ LABEL maintainer="djyoon0223@gmail.com"
 # ignore interaction
 ARG DEBIAN_FRONTEND=noninteractive
 
-# environment
-SHELL ["/bin/bash", "-ic"]
-
 # copy context
 COPY context/config     /opt/docker/context/config
 COPY context/entrypoint /opt/docker/context/entrypoint
@@ -22,19 +19,14 @@ RUN apt update && \
 RUN cat /opt/docker/context/config/account | chpasswd && \
     cat /opt/docker/context/config/sshd_config >> /etc/ssh/sshd_config && \
     cat /opt/docker/context/config/bashrc >> /root/.bashrc && \
-    cat /opt/docker/context/config/vimrc >> /usr/share/vim/vimrc
+    cat /opt/docker/context/config/vimrc >> /usr/share/vim/vimrc && \
+    ln -sf /usr/share/zoneinfo/Asia/Seoul /etc/localtime
 
 # install python
 RUN /opt/docker/context/package/install_python.sh
 
-# install pyenv
-RUN /opt/docker/context/package/install_pyenv.sh
-
 # install poetry
 RUN /opt/docker/context/package/install_poetry.sh
-
-# install java
-RUN /opt/docker/context/package/install_java.sh
 
 # install extension packages
 COPY context/extension /opt/docker/context/extension

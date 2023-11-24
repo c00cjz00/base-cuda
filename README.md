@@ -17,9 +17,7 @@ $ docker pull alchemine/base-cuda:11.8.0-cudnn8-runtime-ubuntu22.04
 2. apt packages
    - [context/package/requirements.apt](https://github.com/alchemine/base-cuda/blob/11.8.0-cudnn8-runtime-ubuntu22.04/context/package/requirements.apt)
    - [context/extension/requirements.apt](https://github.com/alchemine/base-cuda/blob/11.8.0-cudnn8-runtime-ubuntu22.04/context/extension/requirements.apt)
-3. Pyenv(virtualenv)
-   - [context/package/install_pyenv.sh](https://github.com/alchemine/base-cuda/blob/11.8.0-cudnn8-runtime-ubuntu22.04/context/package/install_pyenv.sh)
-4. Poetry
+3. Poetry
    - [context/package/install_poetry.sh](https://github.com/alchemine/base-cuda/blob/11.8.0-cudnn8-runtime-ubuntu22.04/context/package/install_poetry.sh) 
 
 
