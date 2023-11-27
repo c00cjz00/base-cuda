@@ -19,6 +19,8 @@ $ docker pull alchemine/base-cuda:11.8.0-cudnn8-runtime-ubuntu22.04
    - [context/extension/requirements.apt](https://github.com/alchemine/base-cuda/blob/11.8.0-cudnn8-runtime-ubuntu22.04/context/extension/requirements.apt)
 3. Poetry
    - [context/package/install_poetry.sh](https://github.com/alchemine/base-cuda/blob/11.8.0-cudnn8-runtime-ubuntu22.04/context/package/install_poetry.sh) 
+4. Java
+   - [context/package/install_java.sh](https://github.com/alchemine/base-cuda/blob/11.8.0-cudnn8-runtime-ubuntu22.04/context/package/install_java.sh) 
 
 
 # 3. Usage
