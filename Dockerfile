@@ -28,6 +28,9 @@ RUN /opt/docker/context/package/install_python.sh
 # install poetry
 RUN /opt/docker/context/package/install_poetry.sh
 
+# install java
+RUN /opt/docker/context/package/install_java.sh
+
 # install extension packages
 COPY context/extension /opt/docker/context/extension
 RUN /opt/docker/context/extension/install.sh
