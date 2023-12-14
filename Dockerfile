@@ -8,11 +8,11 @@ ARG DEBIAN_FRONTEND=noninteractive
 # copy context
 COPY context/config     /opt/docker/context/config
 COPY context/entrypoint /opt/docker/context/entrypoint
-COPY context/package    /opt/docker/context/package
+COPY context/utils      /opt/docker/context/utils
 
-# install fundamental apt packages
+# install fundamental packages
 RUN apt update && \
-    xargs apt install -y < /opt/docker/context/package/requirements.apt && \
+    xargs apt install -y < /opt/docker/context/utils/requirements.apt && \
     rm -rf /var/lib/apt/lists/*
 
 # set fundamental configuration
@@ -23,17 +23,19 @@ RUN cat /opt/docker/context/config/account | chpasswd && \
     ln -sf /usr/share/zoneinfo/Asia/Seoul /etc/localtime
 
 # install python
-RUN /opt/docker/context/package/install_python.sh
+RUN /opt/docker/context/utils/install_python.sh
 
 # install poetry
-RUN /opt/docker/context/package/install_poetry.sh
+RUN /opt/docker/context/utils/install_poetry.sh
 
 # install java
-RUN /opt/docker/context/package/install_java.sh
+RUN /opt/docker/context/utils/install_java.sh
 
 # install extension packages
 COPY context/extension /opt/docker/context/extension
-RUN /opt/docker/context/extension/install.sh
+RUN apt update && \
+    xargs apt install -y < /opt/docker/context/extension/requirements.apt && \
+    rm -rf /var/lib/apt/lists/*
 
 # run entrypoint.sh
 ENTRYPOINT [ "/opt/docker/context/entrypoint/entrypoint.sh" ]
