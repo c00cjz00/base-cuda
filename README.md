@@ -1,5 +1,6 @@
 # cjz
 ```
+chmod -R 755 context/
 docker build -t c00cjz00/cuda:11.8.0-cudnn8-runtime-ubuntu22.04 .
 ```
 
