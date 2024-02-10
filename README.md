@@ -1,7 +1,12 @@
-# cjz
+# cjz docker
 ```
 chmod -R 755 context/
 docker build -t c00cjz00/cuda:11.8.0-cudnn8-runtime-ubuntu22.04 .
+docker push
+```
+# cjz singularity 
+```
+singularity pull docker://c00cjz00/cuda:11.8.0-cudnn8-runtime-ubuntu22.04
 ```
 
 # Prepared CUDA based Image for Machine Learning Project
