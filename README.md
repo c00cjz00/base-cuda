@@ -1,3 +1,8 @@
+# cjz
+```
+docker build -t c00cjz00/cuda:11.8.0-cudnn8-runtime-ubuntu22.04 .
+```
+
 # Prepared CUDA based Image for Machine Learning Project
 - **GitHub**: [alchemine/base-cuda](https://github.com/alchemine/base-cuda)
 - **DockerHub**: [alchemine/base-cuda](https://hub.docker.com/repository/docker/alchemine/base-cuda)
