@@ -1,6 +1,7 @@
 # syntax=docker/dockerfile:1
-FROM nvidia/cuda:11.8.0-cudnn8-runtime-ubuntu22.04
-LABEL maintainer="djyoon0223@gmail.com"
+FROM nvidia/cuda:11.8.0-cudnn8-devel-ubuntu22.04 
+#FROM nvidia/cuda:11.8.0-cudnn8-runtime-ubuntu22.04
+LABEL maintainer="summerhill001@gmail.com"
 
 # ignore interaction
 ARG DEBIAN_FRONTEND=noninteractive
@@ -20,7 +21,7 @@ RUN cat /opt/docker/context/config/account | chpasswd && \
     cat /opt/docker/context/config/sshd_config >> /etc/ssh/sshd_config && \
     cat /opt/docker/context/config/bashrc >> /root/.bashrc && \
     cat /opt/docker/context/config/vimrc >> /usr/share/vim/vimrc && \
-    ln -sf /usr/share/zoneinfo/Asia/Seoul /etc/localtime
+    ln -sf /usr/share/zoneinfo/Asia/Taipei /etc/localtime
 
 # install python
 RUN /opt/docker/context/utils/install_python.sh
